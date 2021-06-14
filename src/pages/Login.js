@@ -45,7 +45,6 @@ class Login extends Component {
             disabled={ emailValid }
           >
             Jogar
-
           </button>
         </label>
       </>
