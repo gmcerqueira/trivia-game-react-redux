@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
 import { fetchToken } from '../actions/userAction';
 
 class Login extends Component {
@@ -65,5 +67,9 @@ const mapStateToProps = () => ({
 const mapDispatchToProps = (dispatch) => ({
   requestToken: () => dispatch(fetchToken()),
 });
+
+Login.propTypes = {
+  requestToken: PropTypes.func.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
