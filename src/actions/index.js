@@ -1,0 +1,2 @@
+export const EMAIL_CHANGE = 'EMAIL_CHANGE';
+export const PLAYER_CHANGE = 'PLAYER_CHANGE';
