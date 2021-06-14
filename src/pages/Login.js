@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { fetchToken } from '../actions/userAction';
 
 class Login extends Component {
   constructor(props) {
@@ -19,6 +21,7 @@ class Login extends Component {
 
   render() {
     const { email, playerName } = this.state;
+    const { requestToken } = this.props;
     const emailValid = email.length <= 0 || playerName.length <= 0;
     return (
       <>
@@ -39,14 +42,16 @@ class Login extends Component {
             type="text"
             onChange={ this.handleChange }
           />
-          <button
-            data-testid="btn-play"
-            type="submit"
-            disabled={ emailValid }
-          >
-            Jogar
-
-          </button>
+          <Link to="/game">
+            <button
+              data-testid="btn-play"
+              type="submit"
+              disabled={ emailValid }
+              onClick={ requestToken }
+            >
+              Jogar
+            </button>
+          </Link>
         </label>
       </>
     );
@@ -57,8 +62,8 @@ const mapStateToProps = () => ({
 
 });
 
-const mapDispatchToProps = () => {
-
-};
+const mapDispatchToProps = (dispatch) => ({
+  requestToken: () => dispatch(fetchToken()),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

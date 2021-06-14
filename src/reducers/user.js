@@ -1,9 +1,11 @@
 // Esse reducer será responsável por tratar as informações da pessoa usuária
-import { EMAIL_CHANGE, PLAYER_CHANGE } from '../actions/index';
+import { EMAIL_CHANGE, PLAYER_CHANGE, REQUEST_TOKEN_SUCCESS } from '../actions/index';
 
 const initialState = {
   email: '',
   playerName: '',
+  token: '',
+  isFetching: false,
 };
 
 function userReducer(state = initialState, action) {
@@ -18,6 +20,13 @@ function userReducer(state = initialState, action) {
       ...state,
       playerName: action.payload,
     };
+
+  case REQUEST_TOKEN_SUCCESS:
+    return {
+      ...state,
+      ...action.payload,
+    };
+
   default:
     return state;
   }
