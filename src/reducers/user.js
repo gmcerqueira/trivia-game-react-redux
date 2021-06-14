@@ -1,21 +1,21 @@
 // Esse reducer será responsável por tratar as informações da pessoa usuária
-import { EMAIL_CHANGE, PLAYER_CHANGE, REQUEST_TOKEN_SUCCESS } from '../actions/index';
+import { SAVE_EMAIL, SAVE_NAME, REQUEST_TOKEN_SUCCESS } from '../actions/index';
 
 const initialState = {
   email: '',
-  playerName: '',
+  playerName: 'teste',
   token: '',
   isFetching: false,
 };
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
-  case EMAIL_CHANGE:
+  case SAVE_EMAIL:
     return {
       ...state,
       email: action.payload,
     };
-  case PLAYER_CHANGE:
+  case SAVE_NAME:
     return {
       ...state,
       playerName: action.payload,

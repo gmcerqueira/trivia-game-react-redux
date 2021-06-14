@@ -1,13 +1,13 @@
 import { requestToken } from '../services/triviaApi';
 
-export const emailOnChange = (email) => ({
-  type: 'EMAIL_CHANGE',
+export const saveEmail = (email) => ({
+  type: 'SAVE_EMAIL',
   payload: email,
 });
 
-export const playerName = (player) => ({
-  type: 'PLAYER_CHANGE',
-  payload: player,
+export const saveName = (name) => ({
+  type: 'SAVE_NAME',
+  payload: name,
 });
 
 export const requestTokenAPI = () => ({
