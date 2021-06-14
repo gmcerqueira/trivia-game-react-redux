@@ -3,7 +3,12 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { fetchToken, saveName, saveEmail } from '../actions/userAction';
+import {
+  fetchToken,
+  saveName,
+  saveEmail,
+  saveImg,
+} from '../actions/userAction';
 
 class Login extends Component {
   constructor(props) {
@@ -23,7 +28,12 @@ class Login extends Component {
 
   render() {
     const { email, playerName } = this.state;
-    const { requestToken, savePlayerName, savePlayerEmail } = this.props;
+    const {
+      requestToken,
+      saveImg,
+      savePlayerName,
+      savePlayerEmail,
+    } = this.props;
     const emailValid = email.length <= 0 || playerName.length <= 0;
     return (
       <>
@@ -54,6 +64,7 @@ class Login extends Component {
               requestToken();
               savePlayerName(playerName);
               savePlayerEmail(email);
+              saveImg(email);
             } }
           >
             Jogar
@@ -69,12 +80,11 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = () => ({
-
-});
+const mapStateToProps = () => ({});
 
 const mapDispatchToProps = (dispatch) => ({
   requestToken: () => dispatch(fetchToken()),
+  saveImg: (email) => dispatch(saveImg(email)),
   savePlayerName: (name) => dispatch(saveName(name)),
   savePlayerEmail: (name) => dispatch(saveEmail(name)),
 });

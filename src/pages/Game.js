@@ -18,10 +18,10 @@ class Game extends Component {
   }
 
   render() {
-    const { playerName } = this.props;
+    const { playerName, playerImg } = this.props;
     return (
       <header>
-        <img src="" alt="" data-testid="header-profile-picture" />
+        <img src={ playerImg } alt="" data-testid="header-profile-picture" />
         <p data-testid="header-player-name">{playerName}</p>
         <span data-testid="header-score">0</span>
       </header>
@@ -31,6 +31,7 @@ class Game extends Component {
 
 const mapStateToProps = (state) => ({
   playerName: state.userReducer.playerName,
+  playerImg: state.userReducer.playerImg,
 });
 
 const mapDispatchToProps = () => ({
@@ -38,6 +39,7 @@ const mapDispatchToProps = () => ({
 
 Game.propTypes = {
   playerName: PropTypes.string.isRequired,
+  playerImg: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
