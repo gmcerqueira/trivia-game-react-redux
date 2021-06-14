@@ -3,7 +3,7 @@ import { EMAIL_CHANGE, PLAYER_CHANGE } from '../actions/index';
 
 const initialState = {
   email: '',
-  playerName:'',
+  playerName: '',
 };
 
 function userReducer(state = initialState, action) {
@@ -13,11 +13,11 @@ function userReducer(state = initialState, action) {
       ...state,
       email: action.payload,
     };
-    case PLAYER_CHANGE:
-        return {
-          ...state,
-          playerName: action.payload,
-        };
+  case PLAYER_CHANGE:
+    return {
+      ...state,
+      playerName: action.payload,
+    };
   default:
     return state;
   }

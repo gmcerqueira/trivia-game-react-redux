@@ -2,22 +2,24 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 class Login extends Component {
-    constructor(props){
-      super(props);
-      this.state = {
-        email:'',
-        playerName:'',
-      }
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      playerName: '',
+    };
+    this.handleChange = this.handleChange.bind(this);
+  }
 
-    handleChange = ({target:{value, id}}) => {
-      this.setState ({
-        [id]:value,
-      })
-    }
+  handleChange({ target: { value, id } }) {
+    this.setState({
+      [id]: value,
+    });
+  }
+
   render() {
     const { email, playerName } = this.state;
-    const emailValid = !(email.length > 0) || !(playerName.length > 0) 
+    const emailValid = email.length <= 0 || playerName.length <= 0;
     return (
       <>
         <label htmlFor="email">
@@ -26,7 +28,7 @@ class Login extends Component {
             data-testid="input-gravatar-email"
             id="email"
             type="email"
-            onChange={this.handleChange}
+            onChange={ this.handleChange }
           />
         </label>
         <label htmlFor="playerName">
@@ -35,20 +37,27 @@ class Login extends Component {
             data-testid="input-player-name"
             id="playerName"
             type="text"
-            onChange={this.handleChange}
+            onChange={ this.handleChange }
           />
-            <button data-testid="btn-play" type="submit" disabled={emailValid}>Jogar</button>
+          <button
+            data-testid="btn-play"
+            type="submit"
+            disabled={ emailValid }
+          >
+            Jogar
+
+          </button>
         </label>
       </>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = () => ({
 
 });
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = () => {
 
 };
 
