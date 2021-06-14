@@ -44,17 +44,22 @@ class Login extends Component {
             type="text"
             onChange={ this.handleChange }
           />
-          <Link to="/game">
-            <button
-              data-testid="btn-play"
-              type="submit"
-              disabled={ emailValid }
-              onClick={ requestToken }
-            >
-              Jogar
-            </button>
-          </Link>
         </label>
+        <Link to="/game">
+          <button
+            data-testid="btn-play"
+            type="submit"
+            disabled={ emailValid }
+            onClick={ requestToken }
+          >
+            Jogar
+          </button>
+        </Link>
+        <Link to="/config">
+          <button type="button" data-testid="btn-settings">
+            Configurações
+          </button>
+        </Link>
       </>
     );
   }
