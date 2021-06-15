@@ -1,13 +1,21 @@
+import md5 from 'crypto-js/md5';
 import { requestToken } from '../services/triviaApi';
 
-export const emailOnChange = (email) => ({
-  type: 'EMAIL_CHANGE',
+const GRAVATAR_URL = 'https://www.gravatar.com/avatar/';
+
+export const saveEmail = (email) => ({
+  type: 'SAVE_EMAIL',
   payload: email,
 });
 
-export const playerName = (player) => ({
-  type: 'PLAYER_CHANGE',
-  payload: player,
+export const saveName = (name) => ({
+  type: 'SAVE_NAME',
+  payload: name,
+});
+
+export const saveImg = (email) => ({
+  type: 'SAVE_IMG',
+  payload: `${GRAVATAR_URL}${md5(email).toString()}`,
 });
 
 export const requestTokenAPI = () => ({

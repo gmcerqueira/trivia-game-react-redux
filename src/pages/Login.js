@@ -3,7 +3,12 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { fetchToken } from '../actions/userAction';
+import {
+  fetchToken,
+  saveName,
+  saveEmail,
+  saveImg,
+} from '../actions/userAction';
 
 class Login extends Component {
   constructor(props) {
@@ -13,6 +18,7 @@ class Login extends Component {
       playerName: '',
     };
     this.handleChange = this.handleChange.bind(this);
+    this.renderButtons = this.renderButtons.bind(this);
   }
 
   handleChange({ target: { value, id } }) {
@@ -21,10 +27,43 @@ class Login extends Component {
     });
   }
 
-  render() {
+  renderButtons() {
     const { email, playerName } = this.state;
-    const { requestToken } = this.props;
     const emailValid = email.length <= 0 || playerName.length <= 0;
+    const {
+      requestToken,
+      savePlayerImg,
+      savePlayerName,
+      savePlayerEmail,
+    } = this.props;
+    return (
+      <>
+        <Link to="/game">
+          <button
+            data-testid="btn-play"
+            type="submit"
+            disabled={ emailValid }
+            onClick={ () => {
+              requestToken();
+              savePlayerName(playerName);
+              savePlayerEmail(email);
+              savePlayerImg(email);
+            } }
+          >
+            Jogar
+          </button>
+        </Link>
+        <Link to="/config">
+          <button type="button" data-testid="btn-settings">
+            Configurações
+          </button>
+        </Link>
+      </>
+
+    );
+  }
+
+  render() {
     return (
       <>
         <label htmlFor="email">
@@ -45,36 +84,26 @@ class Login extends Component {
             onChange={ this.handleChange }
           />
         </label>
-        <Link to="/game">
-          <button
-            data-testid="btn-play"
-            type="submit"
-            disabled={ emailValid }
-            onClick={ requestToken }
-          >
-            Jogar
-          </button>
-        </Link>
-        <Link to="/config">
-          <button type="button" data-testid="btn-settings">
-            Configurações
-          </button>
-        </Link>
+        {this.renderButtons()}
       </>
     );
   }
 }
 
-const mapStateToProps = () => ({
-
-});
+const mapStateToProps = () => ({});
 
 const mapDispatchToProps = (dispatch) => ({
   requestToken: () => dispatch(fetchToken()),
+  savePlayerImg: (email) => dispatch(saveImg(email)),
+  savePlayerName: (name) => dispatch(saveName(name)),
+  savePlayerEmail: (name) => dispatch(saveEmail(name)),
 });
 
 Login.propTypes = {
   requestToken: PropTypes.func.isRequired,
+  savePlayerName: PropTypes.func.isRequired,
+  savePlayerEmail: PropTypes.func.isRequired,
+  savePlayerImg: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
