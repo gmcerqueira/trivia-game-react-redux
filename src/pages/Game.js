@@ -14,7 +14,7 @@ class Game extends Component {
     };
     this.joinAnswers = this.joinAnswers.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.choosenAnswer = this.choosenAnswer.bind(this);
+    this.choosenAnswer = this.chosenAnswer.bind(this);
   }
 
   componentDidMount() {
@@ -45,7 +45,7 @@ class Game extends Component {
     });
   }
 
-  choosenAnswer() {
+  chosenAnswer() {
     const buttons = document.querySelectorAll('[type=button]');
     buttons.forEach((button) => {
       if (button.dataset.answer === 'correct') {
@@ -62,7 +62,7 @@ class Game extends Component {
     const { questions } = this.props;
     return (
       <main>
-        {questions && (
+        {questions.length && (
           <div key={ currentQuestion }>
             <p data-testid="question-category">
               {questions[currentQuestion].category}
@@ -78,7 +78,7 @@ class Game extends Component {
                     key={ index }
                     data-testid="correct-answer"
                     data-answer="correct"
-                    onClick={ this.choosenAnswer }
+                    onClick={ this.chosenAnswer }
                   >
                     {option}
                   </button>
@@ -89,7 +89,7 @@ class Game extends Component {
                     data-testid={ `wrong-answer-${questions[
                       currentQuestion
                     ].incorrect_answers.indexOf(option)}` }
-                    onClick={ this.choosenAnswer }
+                    onClick={ this.chosenAnswer }
                     data-answer="incorrect"
                   >
                     {option}
