@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchQuestions } from '../actions/gameAction';
+import '../App.css';
 // https://opentdb.com/api.php?amount=5&token=${seu-token-aqui}
 
 class Game extends Component {
@@ -13,6 +14,7 @@ class Game extends Component {
     };
     this.joinAnswers = this.joinAnswers.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.choosenAnswer = this.choosenAnswer.bind(this);
   }
 
   componentDidMount() {
@@ -43,6 +45,11 @@ class Game extends Component {
     });
   }
 
+  choosenAnswer() {
+    const buttons = document.querySelectorAll('[type=button]');
+    console.log(buttons);
+  }
+
   render() {
     const { playerName, playerImg, questions } = this.props;
     const { currentQuestion, options } = this.state;
@@ -69,6 +76,7 @@ class Game extends Component {
                       type="button"
                       key={ index }
                       data-testid="correct-answer"
+                      onClick = { this.choosenAnswer }
                     >
                       {option}
 
@@ -80,6 +88,7 @@ class Game extends Component {
                       data-testid={ `wrong-answer-${questions[
                         currentQuestion
                       ].incorrect_answers.indexOf(option)}` }
+                      onClick = { this.choosenAnswer }
                     >
                       {option}
                     </button>
