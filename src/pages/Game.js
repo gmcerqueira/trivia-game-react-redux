@@ -11,10 +11,12 @@ class Game extends Component {
     this.state = {
       currentQuestion: 0,
       options: [],
+      timer: 30,
     };
     this.joinAnswers = this.joinAnswers.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.choosenAnswer = this.chosenAnswer.bind(this);
+    this.chosenAnswer = this.chosenAnswer.bind(this);
+    this.startTimer = this.startTimer.bind(this);
   }
 
   componentDidMount() {
@@ -57,13 +59,24 @@ class Game extends Component {
     });
   }
 
+  startTimer() {
+    const interval = 1000;
+    const { timer } = this.state;
+    const timerRun = setTimeout(() => {
+      this.setState({ timer: timer - 1 });
+    }, interval);
+    if (timer === 0) clearTimeout(timerRun);
+  }
+
   renderMain() {
-    const { currentQuestion, options } = this.state;
+    const { currentQuestion, options, timer } = this.state;
     const { questions } = this.props;
+
     return (
       <main>
         {questions.length && (
           <div key={ currentQuestion }>
+            {this.startTimer()}
             <p data-testid="question-category">
               {questions[currentQuestion].category}
             </p>
@@ -79,6 +92,7 @@ class Game extends Component {
                     data-testid="correct-answer"
                     data-answer="correct"
                     onClick={ this.chosenAnswer }
+                    disabled={ !timer }
                   >
                     {option}
                   </button>
@@ -91,11 +105,13 @@ class Game extends Component {
                     ].incorrect_answers.indexOf(option)}` }
                     onClick={ this.chosenAnswer }
                     data-answer="incorrect"
+                    disabled={ !timer }
                   >
                     {option}
                   </button>
                 )),
             )}
+            <p>{timer}</p>
           </div>
         )}
       </main>
