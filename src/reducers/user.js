@@ -2,10 +2,10 @@
 import { SAVE_EMAIL, SAVE_NAME, SAVE_IMG, REQUEST_TOKEN_SUCCESS } from '../actions/index';
 
 const initialState = {
-  email: '',
-  playerName: 'teste',
-  playerImg: '',
-  token: '',
+  email: 'gustavomc_53@hotmail.com',
+  playerName: 'Gustavo ',
+  playerImg: 'https://www.gravatar.com/avatar/def584e93ab1b50012af443500b16fca',
+  token: 'bcb29a653c089dd183b4f31a46594519769097d02839bce7c00355364e4f8fe1',
   isFetching: false,
 };
 
