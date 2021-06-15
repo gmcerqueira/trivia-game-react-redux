@@ -12,20 +12,18 @@ export const requestToken = () => fetch(TOKEN_URL)
     return token;
   });
 
-
 export const requestGravatarImage = (email) => {
   const crypto = md5(email).toString();
   return fetch(`${GRAVATA_URL}${crypto}`);
 };
 
-export const requestQuestions = (token) => 
-  fetch(`${QUESTIONS_URL}${token}`)
+export const requestQuestions = (token) => fetch(`${QUESTIONS_URL}${token}`)
   .then((res) => res.json())
   .then((res) => {
     const { results } = res;
     localStorage.setItem('questions', JSON.stringify(results));
     return results;
-  })
+  });
 
 //
 // ${hash-gerada}

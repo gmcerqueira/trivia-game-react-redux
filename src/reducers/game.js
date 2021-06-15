@@ -2,12 +2,10 @@
 import { REQUEST_QUESTIONS_SUCCESS } from '../actions/index';
 
 const initialState = {
- questions:[],
 };
 
-function gameReducer (state = initialState, action) {
+function gameReducer(state = initialState, action) {
   switch (action.type) {
-
   case REQUEST_QUESTIONS_SUCCESS:
     return {
       ...state,
@@ -19,4 +17,4 @@ function gameReducer (state = initialState, action) {
   }
 }
 
-export default gameReducer ;
+export default gameReducer;
