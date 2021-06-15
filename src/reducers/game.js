@@ -2,6 +2,7 @@
 import { REQUEST_QUESTIONS_SUCCESS } from '../actions/index';
 
 const initialState = {
+  questions: [],
 };
 
 function gameReducer(state = initialState, action) {

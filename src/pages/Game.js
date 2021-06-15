@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchQuestions } from '../actions/gameAction';
+import '../App.css';
 // https://opentdb.com/api.php?amount=5&token=${seu-token-aqui}
 
 class Game extends Component {
@@ -13,6 +14,7 @@ class Game extends Component {
     };
     this.joinAnswers = this.joinAnswers.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.choosenAnswer = this.chosenAnswer.bind(this);
   }
 
   componentDidMount() {
@@ -43,9 +45,65 @@ class Game extends Component {
     });
   }
 
-  render() {
-    const { playerName, playerImg, questions } = this.props;
+  chosenAnswer() {
+    const buttons = document.querySelectorAll('[type=button]');
+    buttons.forEach((button) => {
+      if (button.dataset.answer === 'correct') {
+        button.classList.add('correct');
+      }
+      if (button.dataset.answer === 'incorrect') {
+        button.classList.add('incorrect');
+      }
+    });
+  }
+
+  renderMain() {
     const { currentQuestion, options } = this.state;
+    const { questions } = this.props;
+    return (
+      <main>
+        {questions.length && (
+          <div key={ currentQuestion }>
+            <p data-testid="question-category">
+              {questions[currentQuestion].category}
+            </p>
+            <p data-testid="question-text">
+              {questions[currentQuestion].question}
+            </p>
+            {options.map(
+              (option, index) => (option === questions[currentQuestion]
+                .correct_answer ? (
+                  <button
+                    type="button"
+                    key={ index }
+                    data-testid="correct-answer"
+                    data-answer="correct"
+                    onClick={ this.chosenAnswer }
+                  >
+                    {option}
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    key={ index }
+                    data-testid={ `wrong-answer-${questions[
+                      currentQuestion
+                    ].incorrect_answers.indexOf(option)}` }
+                    onClick={ this.chosenAnswer }
+                    data-answer="incorrect"
+                  >
+                    {option}
+                  </button>
+                )),
+            )}
+          </div>
+        )}
+      </main>
+    );
+  }
+
+  render() {
+    const { playerName, playerImg } = this.props;
     return (
       <>
         <header>
@@ -53,41 +111,7 @@ class Game extends Component {
           <p data-testid="header-player-name">{playerName}</p>
           <span data-testid="header-score">0</span>
         </header>
-        <main>
-          {questions && (
-            <div key={ currentQuestion }>
-              <p data-testid="question-category">
-                {questions[currentQuestion].category}
-              </p>
-              <p data-testid="question-text">
-                {questions[currentQuestion].question}
-              </p>
-              {options.map(
-                (option, index) => (option === questions[currentQuestion]
-                  .correct_answer ? (
-                    <button
-                      type="button"
-                      key={ index }
-                      data-testid="correct-answer"
-                    >
-                      {option}
-
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      key={ index }
-                      data-testid={ `wrong-answer-${questions[
-                        currentQuestion
-                      ].incorrect_answers.indexOf(option)}` }
-                    >
-                      {option}
-                    </button>
-                  )),
-              )}
-            </div>
-          )}
-        </main>
+        {this.renderMain()}
       </>
     );
   }
