@@ -47,12 +47,63 @@ class Game extends Component {
 
   choosenAnswer() {
     const buttons = document.querySelectorAll('[type=button]');
-    console.log(buttons);
+    buttons.forEach((button) => {
+      if (button.dataset.answer === 'correct') {
+        button.classList.add('correct');
+      }
+      if (button.dataset.answer === 'incorrect') {
+        button.classList.add('incorrect');
+      }
+    });
+  }
+
+  renderMain() {
+    const { currentQuestion, options } = this.state;
+    const { questions } = this.props;
+    return (
+      <main>
+        {questions && (
+          <div key={ currentQuestion }>
+            <p data-testid="question-category">
+              {questions[currentQuestion].category}
+            </p>
+            <p data-testid="question-text">
+              {questions[currentQuestion].question}
+            </p>
+            {options.map(
+              (option, index) => (option === questions[currentQuestion]
+                .correct_answer ? (
+                  <button
+                    type="button"
+                    key={ index }
+                    data-testid="correct-answer"
+                    data-answer="correct"
+                    onClick={ this.choosenAnswer }
+                  >
+                    {option}
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    key={ index }
+                    data-testid={ `wrong-answer-${questions[
+                      currentQuestion
+                    ].incorrect_answers.indexOf(option)}` }
+                    onClick={ this.choosenAnswer }
+                    data-answer="incorrect"
+                  >
+                    {option}
+                  </button>
+                )),
+            )}
+          </div>
+        )}
+      </main>
+    );
   }
 
   render() {
-    const { playerName, playerImg, questions } = this.props;
-    const { currentQuestion, options } = this.state;
+    const { playerName, playerImg } = this.props;
     return (
       <>
         <header>
@@ -60,43 +111,7 @@ class Game extends Component {
           <p data-testid="header-player-name">{playerName}</p>
           <span data-testid="header-score">0</span>
         </header>
-        <main>
-          {questions && (
-            <div key={ currentQuestion }>
-              <p data-testid="question-category">
-                {questions[currentQuestion].category}
-              </p>
-              <p data-testid="question-text">
-                {questions[currentQuestion].question}
-              </p>
-              {options.map(
-                (option, index) => (option === questions[currentQuestion]
-                  .correct_answer ? (
-                    <button
-                      type="button"
-                      key={ index }
-                      data-testid="correct-answer"
-                      onClick = { this.choosenAnswer }
-                    >
-                      {option}
-
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      key={ index }
-                      data-testid={ `wrong-answer-${questions[
-                        currentQuestion
-                      ].incorrect_answers.indexOf(option)}` }
-                      onClick = { this.choosenAnswer }
-                    >
-                      {option}
-                    </button>
-                  )),
-              )}
-            </div>
-          )}
-        </main>
+        {this.renderMain()}
       </>
     );
   }
