@@ -39,6 +39,13 @@ export const requestTokenAPIError = (error) => ({
   },
 });
 
+export const saveScore = (score) => ({
+  type: 'SAVE_SCORE',
+  payload: {
+    score,
+  },
+});
+
 export const fetchToken = () => (dispatch) => {
   dispatch(requestTokenAPI());
   requestToken()
