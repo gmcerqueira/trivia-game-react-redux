@@ -3,13 +3,13 @@ import { SAVE_EMAIL, SAVE_NAME, SAVE_IMG, REQUEST_TOKEN_SUCCESS } from '../actio
 
 const initialState = {
   email: 'gustavomc_53@hotmail.com',
-  playerName: 'Gustavo ',
-  playerImg: 'https://www.gravatar.com/avatar/def584e93ab1b50012af443500b16fca',
-  token: 'bcb29a653c089dd183b4f31a46594519769097d02839bce7c00355364e4f8fe1',
+  name: 'Gustavo ',
+  gravatarEmail: 'def584e93ab1b50012af443500b16fca',
+  token: '0d9ab73eefc805b6c58570b2017c9500ce3319febb26c751e6dd6e47063e8b66',
   isFetching: false,
 };
 
-function userReducer(state = initialState, action) {
+function player(state = initialState, action) {
   switch (action.type) {
   case SAVE_EMAIL:
     return {
@@ -20,13 +20,13 @@ function userReducer(state = initialState, action) {
   case SAVE_NAME:
     return {
       ...state,
-      playerName: action.payload,
+      name: action.payload,
     };
 
   case SAVE_IMG:
     return {
       ...state,
-      playerImg: action.payload,
+      gravatarEmail: action.payload,
     };
 
   case REQUEST_TOKEN_SUCCESS:
@@ -40,4 +40,4 @@ function userReducer(state = initialState, action) {
   }
 }
 
-export default userReducer;
+export default player;

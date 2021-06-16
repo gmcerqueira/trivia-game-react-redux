@@ -12,15 +12,27 @@ class Game extends Component {
       currentQuestion: 0,
       options: [],
       timer: 30,
+      points: 0,
+      stopTimer: false,
     };
     this.joinAnswers = this.joinAnswers.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.chosenAnswer = this.chosenAnswer.bind(this);
     this.startTimer = this.startTimer.bind(this);
+    this.correctAnswerSumPoints = this.correctAnswerSumPoints.bind(this);
   }
 
   componentDidMount() {
-    const { requestQuestions, token } = this.props;
+    const { requestQuestions, token, name } = this.props;
+    if (!localStorage.getItem('state')) {
+      localStorage.setItem('state', JSON.stringify({
+        player: {
+          name,
+          assertions: 0,
+          score: 0,
+          gravatarEmail: 'gravatarEmail',
+        } }));
+    }
     requestQuestions(token);
   }
 
@@ -47,6 +59,42 @@ class Game extends Component {
     });
   }
 
+  correctAnswerSumPoints() {
+    const { points, currentQuestion, timer } = this.state;
+    const { questions, name, gravatarEmail } = this.props;
+    const { difficulty } = questions[currentQuestion];
+    const levelHard = 3;
+    const basePoints = 10;
+    let pointsDifficulty;
+
+    switch (difficulty) {
+    case 'easy':
+      pointsDifficulty = 1;
+      break;
+
+    case 'medium':
+      pointsDifficulty = 2;
+      break;
+
+    case 'hard':
+      pointsDifficulty = levelHard;
+      break;
+
+    default:
+      break;
+    }
+
+    const totalPoints = points + (basePoints + timer * pointsDifficulty);
+    this.setState({ points: totalPoints });
+    localStorage.setItem('state', JSON.stringify({
+      player: {
+        name,
+        assertions: 0,
+        score: totalPoints,
+        gravatarEmail,
+      } }));
+  }
+
   chosenAnswer() {
     const buttons = document.querySelectorAll('[type=button]');
     buttons.forEach((button) => {
@@ -61,15 +109,58 @@ class Game extends Component {
 
   startTimer() {
     const interval = 1000;
-    const { timer } = this.state;
+    const { timer, stopTimer } = this.state;
     const timerRun = setTimeout(() => {
       this.setState({ timer: timer - 1 });
     }, interval);
-    if (timer === 0) clearTimeout(timerRun);
+    if (timer === 0 || stopTimer) {
+      clearTimeout(timerRun);
+      this.chosenAnswer();
+    }
+  }
+
+  renderOptions() {
+    const { currentQuestion, options, timer, stopTimer } = this.state;
+    const { questions } = this.props;
+    return options.map(
+      (option, index) => (option === questions[currentQuestion]
+        .correct_answer ? (
+          <button
+            type="button"
+            key={ index }
+            data-testid="correct-answer"
+            data-answer="correct"
+            onClick={ () => {
+              this.chosenAnswer();
+              this.setState({ stopTimer: true });
+              this.correctAnswerSumPoints(this);
+            } }
+            disabled={ !timer || stopTimer }
+          >
+            {option}
+          </button>
+        ) : (
+          <button
+            type="button"
+            key={ index }
+            data-testid={ `wrong-answer-${questions[
+              currentQuestion
+            ].incorrect_answers.indexOf(option)}` }
+            onClick={ () => {
+              this.chosenAnswer();
+              this.setState({ stopTimer: true });
+            } }
+            data-answer="incorrect"
+            disabled={ !timer || stopTimer }
+          >
+            {option}
+          </button>
+        )),
+    );
   }
 
   renderMain() {
-    const { currentQuestion, options, timer } = this.state;
+    const { currentQuestion, timer } = this.state;
     const { questions } = this.props;
 
     return (
@@ -83,34 +174,7 @@ class Game extends Component {
             <p data-testid="question-text">
               {questions[currentQuestion].question}
             </p>
-            {options.map(
-              (option, index) => (option === questions[currentQuestion]
-                .correct_answer ? (
-                  <button
-                    type="button"
-                    key={ index }
-                    data-testid="correct-answer"
-                    data-answer="correct"
-                    onClick={ this.chosenAnswer }
-                    disabled={ !timer }
-                  >
-                    {option}
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    key={ index }
-                    data-testid={ `wrong-answer-${questions[
-                      currentQuestion
-                    ].incorrect_answers.indexOf(option)}` }
-                    onClick={ this.chosenAnswer }
-                    data-answer="incorrect"
-                    disabled={ !timer }
-                  >
-                    {option}
-                  </button>
-                )),
-            )}
+            {this.renderOptions()}
             <p>{timer}</p>
           </div>
         )}
@@ -119,13 +183,15 @@ class Game extends Component {
   }
 
   render() {
-    const { playerName, playerImg } = this.props;
+    const { name, gravatarEmail } = this.props;
+    const { points } = this.state;
+
     return (
       <>
         <header>
-          <img src={ playerImg } alt="" data-testid="header-profile-picture" />
-          <p data-testid="header-player-name">{playerName}</p>
-          <span data-testid="header-score">0</span>
+          <img src={ `https://www.gravatar.com/avatar/${gravatarEmail}` } alt="" data-testid="header-profile-picture" />
+          <p data-testid="header-player-name">{name}</p>
+          <span data-testid="header-score">{points}</span>
         </header>
         {this.renderMain()}
       </>
@@ -134,9 +200,9 @@ class Game extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  playerName: state.userReducer.playerName,
-  playerImg: state.userReducer.playerImg,
-  token: state.userReducer.token,
+  name: state.player.name,
+  gravatarEmail: state.player.gravatarEmail,
+  token: state.player.token,
   questions: state.gameReducer.questions,
 });
 
@@ -145,8 +211,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 Game.propTypes = {
-  playerName: PropTypes.string.isRequired,
-  playerImg: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  gravatarEmail: PropTypes.string.isRequired,
   token: PropTypes.string.isRequired,
   requestQuestions: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
