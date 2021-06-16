@@ -11,7 +11,7 @@ class Game extends Component {
     this.state = {
       currentQuestion: 0,
       options: [],
-      timer: 3,
+      timer: 30,
       points: 0,
       stopTimer: false,
     };
@@ -23,11 +23,11 @@ class Game extends Component {
   }
 
   componentDidMount() {
-    const { requestQuestions, token, playerName } = this.props;
+    const { requestQuestions, token, name } = this.props;
     if (!localStorage.getItem('state')) {
       localStorage.setItem('state', JSON.stringify({
         player: {
-          name: playerName,
+          name,
           assertions: 0,
           score: 0,
           gravatarEmail: 'gravatarEmail',
@@ -61,7 +61,7 @@ class Game extends Component {
 
   correctAnswerSumPoints() {
     const { points, currentQuestion, timer } = this.state;
-    const { questions, playerName, gravatarEmail } = this.props;
+    const { questions, name, gravatarEmail } = this.props;
     const { difficulty } = questions[currentQuestion];
     const levelHard = 3;
     const basePoints = 10;
@@ -88,7 +88,7 @@ class Game extends Component {
     this.setState({ points: totalPoints });
     localStorage.setItem('state', JSON.stringify({
       player: {
-        name: playerName,
+        name,
         assertions: 0,
         score: totalPoints,
         gravatarEmail,
@@ -183,14 +183,14 @@ class Game extends Component {
   }
 
   render() {
-    const { playerName, gravatarEmail } = this.props;
+    const { name, gravatarEmail } = this.props;
     const { points } = this.state;
 
     return (
       <>
         <header>
           <img src={ `https://www.gravatar.com/avatar/${gravatarEmail}` } alt="" data-testid="header-profile-picture" />
-          <p data-testid="header-player-name">{playerName}</p>
+          <p data-testid="header-player-name">{name}</p>
           <span data-testid="header-score">{points}</span>
         </header>
         {this.renderMain()}
@@ -211,7 +211,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 Game.propTypes = {
-  playerName: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   gravatarEmail: PropTypes.string.isRequired,
   token: PropTypes.string.isRequired,
   requestQuestions: PropTypes.func.isRequired,
