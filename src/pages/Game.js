@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
+
 import { fetchQuestions } from '../actions/gameAction';
 import '../App.css';
 // https://opentdb.com/api.php?amount=5&token=${seu-token-aqui}
@@ -56,12 +58,14 @@ class Game extends Component {
 
   nextQuestion() {
     const { currentQuestion } = this.state;
-    this.setState({
-      currentQuestion: currentQuestion + 1,
-      timer: 30,
-      stopTimer: false,
-    },
-    () => this.joinAnswers());
+    const { questions } = this.props;
+    return (currentQuestion === (questions.length - 1)) ? this.setState({ endGame: true })
+      : (this.setState({
+        currentQuestion: currentQuestion + 1,
+        timer: 30,
+        stopTimer: false,
+      },
+      () => this.joinAnswers()));
   }
 
   handleChange({ target: { value, id } }) {
@@ -194,15 +198,17 @@ class Game extends Component {
   }
 
   render() {
-    const { name, gravatarEmail } = this.props;
-    const { points, timer, stopTimer } = this.state;
+    const { name, gravatarEmail, questions } = this.props;
+    const { points, timer, stopTimer, endGame, currentQuestion } = this.state;
 
     return (
       <>
+        {endGame && (<Redirect to="/feedback" />)}
         <header>
           <img src={ `https://www.gravatar.com/avatar/${gravatarEmail}` } alt="" data-testid="header-profile-picture" />
           <p data-testid="header-player-name">{name}</p>
-          <span data-testid="header-score">{points}</span>
+          <p data-testid="header-score">{points}</p>
+          <p>{ `${currentQuestion + 1} of ${questions.length}`}</p>
         </header>
         {this.renderMain()}
         { (!timer || stopTimer)
