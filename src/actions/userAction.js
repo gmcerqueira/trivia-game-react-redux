@@ -16,6 +16,11 @@ export const saveImg = (email) => ({
   payload: md5(email).toString(),
 });
 
+export const saveScore = (score) => ({
+  type: 'SAVE_SCORE',
+  payload: score,
+});
+
 export const requestTokenAPI = () => ({
   type: 'REQUEST_TOKEN',
   payload: {

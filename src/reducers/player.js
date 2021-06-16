@@ -1,5 +1,11 @@
 // Esse reducer será responsável por tratar as informações da pessoa usuária
-import { SAVE_EMAIL, SAVE_NAME, SAVE_IMG, REQUEST_TOKEN_SUCCESS } from '../actions/index';
+import {
+  SAVE_EMAIL,
+  SAVE_NAME,
+  SAVE_IMG,
+  REQUEST_TOKEN_SUCCESS,
+  SAVE_SCORE,
+} from '../actions/index';
 
 const initialState = {
   email: 'gustavomc_53@hotmail.com',
@@ -33,6 +39,12 @@ function player(state = initialState, action) {
     return {
       ...state,
       ...action.payload,
+    };
+
+  case SAVE_SCORE:
+    return {
+      ...state,
+      score: action.payload,
     };
 
   default:

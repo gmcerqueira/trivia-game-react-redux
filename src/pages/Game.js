@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 import { fetchQuestions } from '../actions/gameAction';
+import { saveScore } from '../actions/userAction';
 import '../App.css';
 // https://opentdb.com/api.php?amount=5&token=${seu-token-aqui}
 
@@ -57,15 +58,19 @@ class Game extends Component {
   }
 
   nextQuestion() {
-    const { currentQuestion } = this.state;
-    const { questions } = this.props;
-    return (currentQuestion === (questions.length - 1)) ? this.setState({ endGame: true })
-      : (this.setState({
+    const { currentQuestion, points } = this.state;
+    const { questions, savePlayerScore } = this.props;
+    if (currentQuestion === (questions.length - 1)) {
+      savePlayerScore(points);
+      this.setState({ endGame: true });
+    } else {
+      (this.setState({
         currentQuestion: currentQuestion + 1,
         timer: 30,
         stopTimer: false,
       },
       () => this.joinAnswers()));
+    }
   }
 
   handleChange({ target: { value, id } }) {
@@ -234,6 +239,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   requestQuestions: (token) => dispatch(fetchQuestions(token)),
+  savePlayerScore: (score) => dispatch(saveScore(score)),
 });
 
 Game.propTypes = {
@@ -242,6 +248,7 @@ Game.propTypes = {
   token: PropTypes.string.isRequired,
   requestQuestions: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  savePlayerScore: PropTypes.func.isRequired,
 
 };
 

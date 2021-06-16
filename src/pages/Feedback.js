@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // import { Link } from 'react-router-dom';
-// import PropTypes from 'prop-types';
-
-import {
-  fetchToken,
-  saveName,
-  saveEmail,
-  saveImg,
-} from '../actions/userAction';
+import PropTypes from 'prop-types';
 
 class Feedback extends Component {
   constructor(props) {
@@ -18,21 +11,34 @@ class Feedback extends Component {
   }
 
   render() {
+    const { name, gravatarEmail, questions, points } = this.props;
+    const { currentQuestion } = this.state;
     return (
-      <p data-testid="feedback-text">Fim de jogo</p>
+      <header>
+        <img src={ `https://www.gravatar.com/avatar/${gravatarEmail}` } alt="" data-testid="header-profile-picture" />
+        <p data-testid="header-player-name">{name}</p>
+        <p data-testid="header-score">{points}</p>
+        <p>{ `${currentQuestion + 1} of ${questions.length}`}</p>
+        <p data-testid="feedback-text">Fim de jogo</p>
+      </header>
     );
   }
 }
 
-const mapStateToProps = () => ({});
-
-const mapDispatchToProps = (dispatch) => ({
-  requestToken: () => dispatch(fetchToken()),
-  savePlayerImg: (email) => dispatch(saveImg(email)),
-  savePlayerName: (name) => dispatch(saveName(name)),
-  savePlayerEmail: (name) => dispatch(saveEmail(name)),
+const mapStateToProps = (state) => ({
+  name: state.player.name,
+  gravatarEmail: state.player.gravatarEmail,
+  questions: state.gameReducer.questions,
+  points: state.player.score,
 });
 
-Feedback.propTypes = {};
+const mapDispatchToProps = () => ({});
+
+Feedback.propTypes = {
+  name: PropTypes.string.isRequired,
+  gravatarEmail: PropTypes.string.isRequired,
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  points: PropTypes.number.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
