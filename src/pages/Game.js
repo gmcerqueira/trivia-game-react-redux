@@ -16,6 +16,7 @@ class Game extends Component {
       stopTimer: false,
     };
     this.joinAnswers = this.joinAnswers.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.chosenAnswer = this.chosenAnswer.bind(this);
     this.startTimer = this.startTimer.bind(this);
@@ -51,6 +52,16 @@ class Game extends Component {
         ...questions[currentQuestion].incorrect_answers,
       ].sort(() => Math.random() - roundingNumber),
     });
+  }
+
+  nextQuestion() {
+    const { currentQuestion } = this.state;
+    this.setState({
+      currentQuestion: currentQuestion + 1,
+      timer: 30,
+      stopTimer: false,
+    },
+    () => this.joinAnswers());
   }
 
   handleChange({ target: { value, id } }) {
@@ -184,7 +195,7 @@ class Game extends Component {
 
   render() {
     const { name, gravatarEmail } = this.props;
-    const { points } = this.state;
+    const { points, timer, stopTimer } = this.state;
 
     return (
       <>
@@ -194,6 +205,15 @@ class Game extends Component {
           <span data-testid="header-score">{points}</span>
         </header>
         {this.renderMain()}
+        { (!timer || stopTimer)
+        && (
+          <button
+            type="button"
+            data-testid="btn-next"
+            onClick={ this.nextQuestion }
+          >
+            Próxima
+          </button>) }
       </>
     );
   }
