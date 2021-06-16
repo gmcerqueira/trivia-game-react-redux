@@ -11,7 +11,7 @@ class Game extends Component {
     this.state = {
       currentQuestion: 0,
       options: [],
-      timer: 30,
+      timer: 3,
       points: 0,
       stopTimer: false,
     };
@@ -30,7 +30,7 @@ class Game extends Component {
           name: playerName,
           assertions: 0,
           score: 0,
-          gravatarEmail: 'playerImg',
+          gravatarEmail: 'gravatarEmail',
         } }));
     }
     requestQuestions(token);
@@ -61,7 +61,7 @@ class Game extends Component {
 
   correctAnswerSumPoints() {
     const { points, currentQuestion, timer } = this.state;
-    const { questions, playerName, playerImg } = this.props;
+    const { questions, playerName, gravatarEmail } = this.props;
     const { difficulty } = questions[currentQuestion];
     const levelHard = 3;
     const basePoints = 10;
@@ -91,7 +91,7 @@ class Game extends Component {
         name: playerName,
         assertions: 0,
         score: totalPoints,
-        gravatarEmail: playerImg,
+        gravatarEmail,
       } }));
   }
 
@@ -105,7 +105,6 @@ class Game extends Component {
         button.classList.add('incorrect');
       }
     });
-    this.setState({ stopTimer: true });
   }
 
   startTimer() {
@@ -114,7 +113,10 @@ class Game extends Component {
     const timerRun = setTimeout(() => {
       this.setState({ timer: timer - 1 });
     }, interval);
-    if (timer === 0 || stopTimer) clearTimeout(timerRun);
+    if (timer === 0 || stopTimer) {
+      clearTimeout(timerRun);
+      this.chosenAnswer();
+    }
   }
 
   renderOptions() {
@@ -130,6 +132,7 @@ class Game extends Component {
             data-answer="correct"
             onClick={ () => {
               this.chosenAnswer();
+              this.setState({ stopTimer: true });
               this.correctAnswerSumPoints(this);
             } }
             disabled={ !timer || stopTimer }
@@ -143,7 +146,10 @@ class Game extends Component {
             data-testid={ `wrong-answer-${questions[
               currentQuestion
             ].incorrect_answers.indexOf(option)}` }
-            onClick={ this.chosenAnswer }
+            onClick={ () => {
+              this.chosenAnswer();
+              this.setState({ stopTimer: true });
+            } }
             data-answer="incorrect"
             disabled={ !timer || stopTimer }
           >
@@ -177,13 +183,13 @@ class Game extends Component {
   }
 
   render() {
-    const { playerName, playerImg } = this.props;
+    const { playerName, gravatarEmail } = this.props;
     const { points } = this.state;
 
     return (
       <>
         <header>
-          <img src={ playerImg } alt="" data-testid="header-profile-picture" />
+          <img src={ `https://www.gravatar.com/avatar/${gravatarEmail}` } alt="" data-testid="header-profile-picture" />
           <p data-testid="header-player-name">{playerName}</p>
           <span data-testid="header-score">{points}</span>
         </header>
@@ -194,9 +200,9 @@ class Game extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  playerName: state.userReducer.playerName,
-  playerImg: state.userReducer.playerImg,
-  token: state.userReducer.token,
+  name: state.player.name,
+  gravatarEmail: state.player.gravatarEmail,
+  token: state.player.token,
   questions: state.gameReducer.questions,
 });
 
@@ -206,7 +212,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 Game.propTypes = {
   playerName: PropTypes.string.isRequired,
-  playerImg: PropTypes.string.isRequired,
+  gravatarEmail: PropTypes.string.isRequired,
   token: PropTypes.string.isRequired,
   requestQuestions: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
