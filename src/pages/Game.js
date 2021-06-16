@@ -13,6 +13,7 @@ class Game extends Component {
       options: [],
       timer: 30,
       points: 0,
+      stopTimer: false,
     };
     this.joinAnswers = this.joinAnswers.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -104,19 +105,20 @@ class Game extends Component {
         button.classList.add('incorrect');
       }
     });
+    this.setState({ stopTimer: true });
   }
 
   startTimer() {
     const interval = 1000;
-    const { timer } = this.state;
+    const { timer, stopTimer } = this.state;
     const timerRun = setTimeout(() => {
       this.setState({ timer: timer - 1 });
     }, interval);
-    if (timer === 0) clearTimeout(timerRun);
+    if (timer === 0 || stopTimer) clearTimeout(timerRun);
   }
 
   renderOptions() {
-    const { currentQuestion, options, timer } = this.state;
+    const { currentQuestion, options, timer, stopTimer } = this.state;
     const { questions } = this.props;
     return options.map(
       (option, index) => (option === questions[currentQuestion]
@@ -130,7 +132,7 @@ class Game extends Component {
               this.chosenAnswer();
               this.correctAnswerSumPoints(this);
             } }
-            disabled={ !timer }
+            disabled={ !timer || stopTimer }
           >
             {option}
           </button>
@@ -143,7 +145,7 @@ class Game extends Component {
             ].incorrect_answers.indexOf(option)}` }
             onClick={ this.chosenAnswer }
             data-answer="incorrect"
-            disabled={ !timer }
+            disabled={ !timer || stopTimer }
           >
             {option}
           </button>
