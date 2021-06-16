@@ -12,15 +12,26 @@ class Game extends Component {
       currentQuestion: 0,
       options: [],
       timer: 30,
+      points: 0,
     };
     this.joinAnswers = this.joinAnswers.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.chosenAnswer = this.chosenAnswer.bind(this);
     this.startTimer = this.startTimer.bind(this);
+    this.correctAnswerSumPoints = this.correctAnswerSumPoints.bind(this);
   }
 
   componentDidMount() {
-    const { requestQuestions, token } = this.props;
+    const { requestQuestions, token, playerName } = this.props;
+    if (!localStorage.getItem('state')) {
+      localStorage.setItem('state', JSON.stringify({
+        player: {
+          name: playerName,
+          assertions: 0,
+          score: 0,
+          gravatarEmail: 'playerImg',
+        } }));
+    }
     requestQuestions(token);
   }
 
@@ -47,6 +58,42 @@ class Game extends Component {
     });
   }
 
+  correctAnswerSumPoints() {
+    const { points, currentQuestion, timer } = this.state;
+    const { questions, playerName, playerImg } = this.props;
+    const { difficulty } = questions[currentQuestion];
+    const levelHard = 3;
+    const basePoints = 10;
+    let pointsDifficulty;
+
+    switch (difficulty) {
+    case 'easy':
+      pointsDifficulty = 1;
+      break;
+
+    case 'medium':
+      pointsDifficulty = 2;
+      break;
+
+    case 'hard':
+      pointsDifficulty = levelHard;
+      break;
+
+    default:
+      break;
+    }
+
+    const totalPoints = points + (basePoints + timer * pointsDifficulty);
+    this.setState({ points: totalPoints });
+    localStorage.setItem('state', JSON.stringify({
+      player: {
+        name: playerName,
+        assertions: 0,
+        score: totalPoints,
+        gravatarEmail: playerImg,
+      } }));
+  }
+
   chosenAnswer() {
     const buttons = document.querySelectorAll('[type=button]');
     buttons.forEach((button) => {
@@ -68,8 +115,44 @@ class Game extends Component {
     if (timer === 0) clearTimeout(timerRun);
   }
 
-  renderMain() {
+  renderOptions() {
     const { currentQuestion, options, timer } = this.state;
+    const { questions } = this.props;
+    return options.map(
+      (option, index) => (option === questions[currentQuestion]
+        .correct_answer ? (
+          <button
+            type="button"
+            key={ index }
+            data-testid="correct-answer"
+            data-answer="correct"
+            onClick={ () => {
+              this.chosenAnswer();
+              this.correctAnswerSumPoints(this);
+            } }
+            disabled={ !timer }
+          >
+            {option}
+          </button>
+        ) : (
+          <button
+            type="button"
+            key={ index }
+            data-testid={ `wrong-answer-${questions[
+              currentQuestion
+            ].incorrect_answers.indexOf(option)}` }
+            onClick={ this.chosenAnswer }
+            data-answer="incorrect"
+            disabled={ !timer }
+          >
+            {option}
+          </button>
+        )),
+    );
+  }
+
+  renderMain() {
+    const { currentQuestion, timer } = this.state;
     const { questions } = this.props;
 
     return (
@@ -83,34 +166,7 @@ class Game extends Component {
             <p data-testid="question-text">
               {questions[currentQuestion].question}
             </p>
-            {options.map(
-              (option, index) => (option === questions[currentQuestion]
-                .correct_answer ? (
-                  <button
-                    type="button"
-                    key={ index }
-                    data-testid="correct-answer"
-                    data-answer="correct"
-                    onClick={ this.chosenAnswer }
-                    disabled={ !timer }
-                  >
-                    {option}
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    key={ index }
-                    data-testid={ `wrong-answer-${questions[
-                      currentQuestion
-                    ].incorrect_answers.indexOf(option)}` }
-                    onClick={ this.chosenAnswer }
-                    data-answer="incorrect"
-                    disabled={ !timer }
-                  >
-                    {option}
-                  </button>
-                )),
-            )}
+            {this.renderOptions()}
             <p>{timer}</p>
           </div>
         )}
@@ -120,12 +176,14 @@ class Game extends Component {
 
   render() {
     const { playerName, playerImg } = this.props;
+    const { points } = this.state;
+
     return (
       <>
         <header>
           <img src={ playerImg } alt="" data-testid="header-profile-picture" />
           <p data-testid="header-player-name">{playerName}</p>
-          <span data-testid="header-score">0</span>
+          <span data-testid="header-score">{points}</span>
         </header>
         {this.renderMain()}
       </>
