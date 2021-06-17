@@ -6,19 +6,32 @@ import PropTypes from 'prop-types';
 class Feedback extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
+  }
+
+  showMessage() {
+    const { assertions } = this.props;
+    const minAssertion = 3;
+
+    if (assertions < minAssertion) {
+      return 'Podia ser melhor...';
+    } if (assertions >= minAssertion) {
+      return 'Mandou bem!';
+    }
   }
 
   render() {
-    const { name, gravatarEmail, questions, points } = this.props;
-    const { currentQuestion } = this.state;
+    const { name, gravatarEmail, score, assertions } = this.props;
     return (
       <header>
-        <img src={ `https://www.gravatar.com/avatar/${gravatarEmail}` } alt="" data-testid="header-profile-picture" />
+        <img
+          src={ `https://www.gravatar.com/avatar/${gravatarEmail}` }
+          alt=""
+          data-testid="header-profile-picture"
+        />
         <p data-testid="header-player-name">{name}</p>
-        <p data-testid="header-score">{points}</p>
-        <p>{ `${currentQuestion + 1} of ${questions.length}`}</p>
+        <p data-testid="header-score">{score}</p>
+        <p data-testid="feedback-text">{this.showMessage(assertions)}</p>
         <p data-testid="feedback-text">Fim de jogo</p>
       </header>
     );
@@ -28,8 +41,9 @@ class Feedback extends Component {
 const mapStateToProps = (state) => ({
   name: state.player.name,
   gravatarEmail: state.player.gravatarEmail,
+  assertions: state.player.assertions,
   questions: state.gameReducer.questions,
-  points: state.player.score,
+  score: state.player.score,
 });
 
 const mapDispatchToProps = () => ({});
@@ -37,8 +51,8 @@ const mapDispatchToProps = () => ({});
 Feedback.propTypes = {
   name: PropTypes.string.isRequired,
   gravatarEmail: PropTypes.string.isRequired,
-  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
-  points: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Feedback);

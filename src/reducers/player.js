@@ -12,6 +12,7 @@ const initialState = {
   email: 'gustavomc_53@hotmail.com',
   name: 'Gustavo ',
   gravatarEmail: 'def584e93ab1b50012af443500b16fca',
+  score: 0,
   assertions: 0,
   token: 'd139ac0eee1d52d9399eed3fc7eab0bfcc01fc188cd3ee03611f79582268fca1',
   isFetching: false,
