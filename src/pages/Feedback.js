@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { Link } from 're
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 class Feedback extends Component {
@@ -37,6 +37,9 @@ class Feedback extends Component {
           <p data-testid="feedback-text">{this.showMessage(assertions)}</p>
           <p data-testid="feedback-total-question">{assertions}</p>
           <p data-testid="feedback-total-score">{score}</p>
+          <Link to="/">
+            <button type="button" data-testid="btn-play-again">Jogar novamente</button>
+          </Link>
         </main>
       </>
     );
