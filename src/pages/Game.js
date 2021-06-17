@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 import { fetchQuestions } from '../actions/gameAction';
-import { saveScore } from '../actions/userAction';
+import { saveScore, saveAssertions } from '../actions/userAction';
 import '../App.css';
 // https://opentdb.com/api.php?amount=5&token=${seu-token-aqui}
 
@@ -12,6 +12,7 @@ class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      assertions: 0,
       currentQuestion: 0,
       options: [],
       timer: 30,
@@ -58,10 +59,11 @@ class Game extends Component {
   }
 
   nextQuestion() {
-    const { currentQuestion, points } = this.state;
-    const { questions, savePlayerScore } = this.props;
+    const { currentQuestion, points, assertions } = this.state;
+    const { questions, savePlayerScore, savePlayerAssertions } = this.props;
     if (currentQuestion === (questions.length - 1)) {
       savePlayerScore(points);
+      savePlayerAssertions(assertions);
       this.setState({ endGame: true });
     } else {
       (this.setState({
@@ -80,7 +82,7 @@ class Game extends Component {
   }
 
   correctAnswerSumPoints() {
-    const { points, currentQuestion, timer } = this.state;
+    const { points, currentQuestion, timer, assertions } = this.state;
     const { questions, name, gravatarEmail } = this.props;
     const { difficulty } = questions[currentQuestion];
     const levelHard = 3;
@@ -105,7 +107,7 @@ class Game extends Component {
     }
 
     const totalPoints = points + (basePoints + timer * pointsDifficulty);
-    this.setState({ points: totalPoints });
+    this.setState({ points: totalPoints, assertions: assertions + 1 });
     localStorage.setItem('state', JSON.stringify({
       player: {
         name,
@@ -234,21 +236,25 @@ const mapStateToProps = (state) => ({
   name: state.player.name,
   gravatarEmail: state.player.gravatarEmail,
   token: state.player.token,
+  assertions: state.player.assertions,
   questions: state.gameReducer.questions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   requestQuestions: (token) => dispatch(fetchQuestions(token)),
   savePlayerScore: (score) => dispatch(saveScore(score)),
+  savePlayerAssertions: (assertions) => dispatch(saveAssertions(assertions)),
 });
 
 Game.propTypes = {
   name: PropTypes.string.isRequired,
   gravatarEmail: PropTypes.string.isRequired,
+  // assertions: PropTypes.number.isRequired,
   token: PropTypes.string.isRequired,
   requestQuestions: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   savePlayerScore: PropTypes.func.isRequired,
+  savePlayerAssertions: PropTypes.func.isRequired,
 
 };
 
