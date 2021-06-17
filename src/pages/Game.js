@@ -56,11 +56,16 @@ class Game extends Component {
 
   nextQuestion() {
     const { currentQuestion, points, assertions } = this.state;
-    const { questions, savePlayerScore, savePlayerAssertions } = this.props;
+    const { questions, savePlayerScore, savePlayerAssertions, name, gravatarEmail } = this.props;
     if (currentQuestion === (questions.length - 1)) {
       savePlayerScore(points);
       savePlayerAssertions(assertions);
-      this.setState({ endGame: true });
+      this.setState({ endGame: true }, () => {
+          const ranking = JSON.parse(localStorage.getItem('ranking')) || [];
+          localStorage.setItem('ranking', JSON.stringify(
+            [ ...ranking, { name, score: points, gravatarEmail } ]
+          ));
+      });
     } else {
       (this.setState({
         currentQuestion: currentQuestion + 1,
@@ -100,13 +105,15 @@ class Game extends Component {
     const totalPoints = points + (basePoints + timer * pointsDifficulty);
     const totalAssertions = assertions + 1;
     this.setState({ points: totalPoints, assertions: totalAssertions },
-      () => localStorage.setItem('state', JSON.stringify({
-        player: {
-          name,
-          assertions: totalAssertions,
-          score: totalPoints,
-          gravatarEmail,
-        } })));
+      () => {
+        localStorage.setItem('state', JSON.stringify({
+          player: {
+            name,
+            assertions: totalAssertions,
+            score: totalPoints,
+            gravatarEmail,
+          } }));
+      });
   }
 
   chosenAnswer() {
