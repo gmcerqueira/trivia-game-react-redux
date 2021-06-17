@@ -21,6 +21,11 @@ export const saveScore = (score) => ({
   payload: score,
 });
 
+export const saveAssertions = (assertions) => ({
+  type: 'SAVE_ASSERTIONS',
+  payload: assertions,
+});
+
 export const requestTokenAPI = () => ({
   type: 'REQUEST_TOKEN',
   payload: {
