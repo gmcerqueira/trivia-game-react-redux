@@ -27,13 +27,17 @@ class Game extends Component {
 
   componentDidMount() {
     const { requestQuestions, token, name } = this.props;
-    localStorage.setItem('state', JSON.stringify({
-      player: {
-        name,
-        assertions: 0,
-        score: 0,
-        gravatarEmail: 'gravatarEmail',
-      } }));
+    localStorage.setItem(
+      'state',
+      JSON.stringify({
+        player: {
+          name,
+          assertions: 0,
+          score: 0,
+          gravatarEmail: 'gravatarEmail',
+        },
+      }),
+    );
     requestQuestions(token);
   }
 
@@ -56,18 +60,33 @@ class Game extends Component {
 
   nextQuestion() {
     const { currentQuestion, points, assertions } = this.state;
-    const { questions, savePlayerScore, savePlayerAssertions } = this.props;
-    if (currentQuestion === (questions.length - 1)) {
+    const {
+      questions,
+      savePlayerScore,
+      savePlayerAssertions,
+      name,
+      gravatarEmail,
+    } = this.props;
+    if (currentQuestion === questions.length - 1) {
       savePlayerScore(points);
       savePlayerAssertions(assertions);
-      this.setState({ endGame: true });
+      this.setState({ endGame: true }, () => {
+        const ranking = JSON.parse(localStorage.getItem('ranking')) || [];
+        localStorage.removeItem('questions');
+        localStorage.setItem(
+          'ranking',
+          JSON.stringify([...ranking, { name, score: points, gravatarEmail }]),
+        );
+      });
     } else {
-      (this.setState({
-        currentQuestion: currentQuestion + 1,
-        timer: 30,
-        stopTimer: false,
-      },
-      () => this.joinAnswers()));
+      this.setState(
+        {
+          currentQuestion: currentQuestion + 1,
+          timer: 30,
+          stopTimer: false,
+        },
+        () => this.joinAnswers(),
+      );
     }
   }
 
@@ -99,14 +118,19 @@ class Game extends Component {
     }
     const totalPoints = points + (basePoints + timer * pointsDifficulty);
     const totalAssertions = assertions + 1;
-    this.setState({ points: totalPoints, assertions: totalAssertions },
-      () => localStorage.setItem('state', JSON.stringify({
-        player: {
-          name,
-          assertions: totalAssertions,
-          score: totalPoints,
-          gravatarEmail,
-        } })));
+    this.setState({ points: totalPoints, assertions: totalAssertions }, () => {
+      localStorage.setItem(
+        'state',
+        JSON.stringify({
+          player: {
+            name,
+            assertions: totalAssertions,
+            score: totalPoints,
+            gravatarEmail,
+          },
+        }),
+      );
+    });
   }
 
   chosenAnswer() {
@@ -136,41 +160,39 @@ class Game extends Component {
   renderOptions() {
     const { currentQuestion, options, timer, stopTimer } = this.state;
     const { questions } = this.props;
-    return options.map(
-      (option, index) => (option === questions[currentQuestion]
-        .correct_answer ? (
-          <button
-            type="button"
-            key={ index }
-            data-testid="correct-answer"
-            data-answer="correct"
-            onClick={ () => {
-              this.chosenAnswer();
-              this.setState({ stopTimer: true });
-              this.correctAnswerSumPoints(this);
-            } }
-            disabled={ !timer || stopTimer }
-          >
-            {option}
-          </button>
-        ) : (
-          <button
-            type="button"
-            key={ index }
-            data-testid={ `wrong-answer-${questions[
-              currentQuestion
-            ].incorrect_answers.indexOf(option)}` }
-            onClick={ () => {
-              this.chosenAnswer();
-              this.setState({ stopTimer: true });
-            } }
-            data-answer="incorrect"
-            disabled={ !timer || stopTimer }
-          >
-            {option}
-          </button>
-        )),
-    );
+    return options
+      .map((option, index) => (option === questions[currentQuestion].correct_answer ? (
+        <button
+          type="button"
+          key={ index }
+          data-testid="correct-answer"
+          data-answer="correct"
+          onClick={ () => {
+            this.chosenAnswer();
+            this.setState({ stopTimer: true });
+            this.correctAnswerSumPoints(this);
+          } }
+          disabled={ !timer || stopTimer }
+        >
+          {option}
+        </button>
+      ) : (
+        <button
+          type="button"
+          key={ index }
+          data-testid={ `wrong-answer-${questions[
+            currentQuestion
+          ].incorrect_answers.indexOf(option)}` }
+          onClick={ () => {
+            this.chosenAnswer();
+            this.setState({ stopTimer: true });
+          } }
+          data-answer="incorrect"
+          disabled={ !timer || stopTimer }
+        >
+          {option}
+        </button>
+      )));
   }
 
   renderMain() {
@@ -200,23 +222,27 @@ class Game extends Component {
     const { points, timer, stopTimer, endGame, currentQuestion } = this.state;
     return (
       <>
-        {endGame && (<Redirect to="/feedback" />)}
+        {endGame && <Redirect to="/feedback" />}
         <header>
-          <img src={ `https://www.gravatar.com/avatar/${gravatarEmail}` } alt="" data-testid="header-profile-picture" />
+          <img
+            src={ `https://www.gravatar.com/avatar/${gravatarEmail}` }
+            alt=""
+            data-testid="header-profile-picture"
+          />
           <p data-testid="header-player-name">{name}</p>
           <p data-testid="header-score">{points}</p>
-          <p>{ `${currentQuestion + 1} of ${questions.length}`}</p>
+          <p>{`${currentQuestion + 1} of ${questions.length}`}</p>
         </header>
         {this.renderMain()}
-        { (!timer || stopTimer)
-        && (
+        {(!timer || stopTimer) && (
           <button
             type="button"
             data-testid="btn-next"
             onClick={ this.nextQuestion }
           >
             Próxima
-          </button>) }
+          </button>
+        )}
       </>
     );
   }
