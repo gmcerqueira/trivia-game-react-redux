@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Game from './Game';
+import { Link } from 'react-router-dom';
 
 class Ranking extends Component {
   constructor(props) {
@@ -21,28 +21,29 @@ class Ranking extends Component {
     const ranking = JSON.parse(localStorage.getItem('ranking'));
     return (
       <>
-      <h1 data-testid="ranking-title">
-        Ranking
-      </h1>
+        <h1 data-testid="ranking-title">
+          Ranking
+        </h1>
 
-      <table>
-        <tr>
-          <th>
-            Image
-          </th>
-          <th>
-            Name
-          </th>
-          <th>
-            Score
-          </th>
-        </tr>
-          { ranking && ranking.sort((a,b) => {
-            if (a.score < b.score) return 1
-            if (a.score > b.score) return -1
-            return 0
-          }).map((player, index) => 
-            <tr>
+        <table>
+          <tr>
+            <th>
+              Image
+            </th>
+            <th>
+              Name
+            </th>
+            <th>
+              Score
+            </th>
+          </tr>
+          {ranking && ranking.sort((a, b) => {
+            const minusOne = -1;
+            if (a.score < b.score) return 1;
+            if (a.score > b.score) return minusOne;
+            return 0;
+          }).map((player, index) => (
+            <tr key={ index }>
               <td>
                 <img src={ `https://www.gravatar.com/avatar/${player.gravatarEmail}` } alt="" />
               </td>
@@ -53,8 +54,11 @@ class Ranking extends Component {
                 { player.score }
               </td>
             </tr>
-          ) }
-      </table>
+          ))}
+        </table>
+        <Link to="/">
+          <button type="button" data-testid="btn-go-home">Voltar ao inicio</button>
+        </Link>
       </>
     );
   }
