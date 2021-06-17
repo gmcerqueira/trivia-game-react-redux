@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-
 import { fetchQuestions } from '../actions/gameAction';
 import { saveScore, saveAssertions } from '../actions/userAction';
 import '../App.css';
-// https://opentdb.com/api.php?amount=5&token=${seu-token-aqui}
 
 class Game extends Component {
   constructor(props) {
@@ -29,15 +27,13 @@ class Game extends Component {
 
   componentDidMount() {
     const { requestQuestions, token, name } = this.props;
-    if (!localStorage.getItem('state')) {
-      localStorage.setItem('state', JSON.stringify({
-        player: {
-          name,
-          assertions: 0,
-          score: 0,
-          gravatarEmail: 'gravatarEmail',
-        } }));
-    }
+    localStorage.setItem('state', JSON.stringify({
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: 'gravatarEmail',
+      } }));
     requestQuestions(token);
   }
 
@@ -88,33 +84,29 @@ class Game extends Component {
     const levelHard = 3;
     const basePoints = 10;
     let pointsDifficulty;
-
     switch (difficulty) {
     case 'easy':
       pointsDifficulty = 1;
       break;
-
     case 'medium':
       pointsDifficulty = 2;
       break;
-
     case 'hard':
       pointsDifficulty = levelHard;
       break;
-
     default:
       break;
     }
-
     const totalPoints = points + (basePoints + timer * pointsDifficulty);
-    this.setState({ points: totalPoints, assertions: assertions + 1 });
-    localStorage.setItem('state', JSON.stringify({
-      player: {
-        name,
-        assertions: 0,
-        score: totalPoints,
-        gravatarEmail,
-      } }));
+    const totalAssertions = assertions + 1;
+    this.setState({ points: totalPoints, assertions: totalAssertions },
+      () => localStorage.setItem('state', JSON.stringify({
+        player: {
+          name,
+          assertions: totalAssertions,
+          score: totalPoints,
+          gravatarEmail,
+        } })));
   }
 
   chosenAnswer() {
@@ -184,7 +176,6 @@ class Game extends Component {
   renderMain() {
     const { currentQuestion, timer } = this.state;
     const { questions } = this.props;
-
     return (
       <main>
         {questions.length && (
@@ -207,7 +198,6 @@ class Game extends Component {
   render() {
     const { name, gravatarEmail, questions } = this.props;
     const { points, timer, stopTimer, endGame, currentQuestion } = this.state;
-
     return (
       <>
         {endGame && (<Redirect to="/feedback" />)}
@@ -249,13 +239,11 @@ const mapDispatchToProps = (dispatch) => ({
 Game.propTypes = {
   name: PropTypes.string.isRequired,
   gravatarEmail: PropTypes.string.isRequired,
-  // assertions: PropTypes.number.isRequired,
   token: PropTypes.string.isRequired,
   requestQuestions: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   savePlayerScore: PropTypes.func.isRequired,
   savePlayerAssertions: PropTypes.func.isRequired,
-
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
