@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { Link } from 'react-router-dom';
+// import { Link } from 're
 import PropTypes from 'prop-types';
 
 class Feedback extends Component {
@@ -23,17 +23,22 @@ class Feedback extends Component {
   render() {
     const { name, gravatarEmail, score, assertions } = this.props;
     return (
-      <header>
-        <img
-          src={ `https://www.gravatar.com/avatar/${gravatarEmail}` }
-          alt=""
-          data-testid="header-profile-picture"
-        />
-        <p data-testid="header-player-name">{name}</p>
-        <p data-testid="header-score">{score}</p>
-        <p data-testid="feedback-text">{this.showMessage(assertions)}</p>
-        <p data-testid="feedback-text">Fim de jogo</p>
-      </header>
+      <>
+        <header>
+          <img
+            src={ `https://www.gravatar.com/avatar/${gravatarEmail}` }
+            alt=""
+            data-testid="header-profile-picture"
+          />
+          <p data-testid="header-player-name">{name}</p>
+          <p data-testid="header-score">{score}</p>
+        </header>
+        <main>
+          <p data-testid="feedback-text">{this.showMessage(assertions)}</p>
+          <p data-testid="feedback-total-question">{assertions}</p>
+          <p data-testid="feedback-total-score">{score}</p>
+        </main>
+      </>
     );
   }
 }
