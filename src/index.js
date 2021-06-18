@@ -8,11 +8,14 @@ import store from './store';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-  <Provider store={ store }>
-    <Router>
-      <App />
-    </Router>
-  </Provider>,
+  <div className="App">
+    <Provider store={ store }>
+      <Router>
+        <App />
+      </Router>
+    </Provider>
+  </div>,
+
   document.getElementById('root'),
 );
 // If you want your app to work offline and load faster, you can change

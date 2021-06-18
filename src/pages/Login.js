@@ -10,6 +10,8 @@ import {
   saveImg,
 } from '../actions/userAction';
 
+import '../styles/Login.css';
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -30,16 +32,12 @@ class Login extends Component {
   renderButtons() {
     const { email, playerName } = this.state;
     const emailValid = email.length <= 0 || playerName.length <= 0;
-    const {
-      requestToken,
-      savePlayerImg,
-      savePlayerName,
-      savePlayerEmail,
-    } = this.props;
+    const { requestToken, savePlayerImg, savePlayerName, savePlayerEmail } = this.props;
     return (
       <>
         <Link to="/game">
           <button
+            className="login-btn play-btn"
             data-testid="btn-play"
             type="submit"
             disabled={ emailValid }
@@ -54,38 +52,45 @@ class Login extends Component {
           </button>
         </Link>
         <Link to="/config">
-          <button type="button" data-testid="btn-settings">
+          <button
+            className="login-btn config-btn"
+            type="button"
+            data-testid="btn-settings"
+          >
             Configurações
           </button>
         </Link>
       </>
-
     );
   }
 
   render() {
     return (
-      <>
-        <label htmlFor="email">
-          Email do Gravatar
-          <input
-            data-testid="input-gravatar-email"
-            id="email"
-            type="email"
-            onChange={ this.handleChange }
-          />
-        </label>
-        <label htmlFor="playerName">
-          Nome do Jogador
-          <input
-            data-testid="input-player-name"
-            id="playerName"
-            type="text"
-            onChange={ this.handleChange }
-          />
-        </label>
-        {this.renderButtons()}
-      </>
+      <div className="login-page">
+        <div className="login-container">
+          <label className="login-label" htmlFor="email">
+            <input
+              className="login-input"
+              data-testid="input-gravatar-email"
+              id="email"
+              type="email"
+              placeholder="Email"
+              onChange={ this.handleChange }
+            />
+          </label>
+          <label className="login-label" htmlFor="playerName">
+            <input
+              className="login-input"
+              data-testid="input-player-name"
+              id="playerName"
+              type="text"
+              placeholder="Player name"
+              onChange={ this.handleChange }
+            />
+          </label>
+          {this.renderButtons()}
+        </div>
+      </div>
     );
   }
 }
