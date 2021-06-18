@@ -7,6 +7,7 @@ import { saveScore, saveAssertions } from '../actions/userAction';
 import chosenAnswer from '../services/auxFunctions';
 import '../App.css';
 import BtnNextQuestion from '../components/BtnNextQuestion';
+import Header from '../components/Header';
 
 class Game extends Component {
   constructor(props) {
@@ -206,21 +207,11 @@ class Game extends Component {
   }
 
   render() {
-    const { name, gravatarEmail, questions } = this.props;
-    const { points, timer, stopTimer, endGame, currentQuestion } = this.state;
+    const { timer, stopTimer, endGame } = this.state;
     return (
       <>
         {endGame && <Redirect to="/feedback" />}
-        <header>
-          <img
-            src={ `https://www.gravatar.com/avatar/${gravatarEmail}` }
-            alt=""
-            data-testid="header-profile-picture"
-          />
-          <p data-testid="header-player-name">{name}</p>
-          <p data-testid="header-score">{points}</p>
-          <p>{`${currentQuestion + 1} of ${questions.length}`}</p>
-        </header>
+        <Header />
         {this.renderMain()}
         {(!timer || stopTimer) && (
           <BtnNextQuestion nextQuestion={ this.nextQuestion } />
