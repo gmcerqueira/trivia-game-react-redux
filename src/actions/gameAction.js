@@ -1,5 +1,10 @@
 import { requestQuestions } from '../services/triviaApi';
 
+export const saveCurrentIndex = (index) => ({
+  type: 'SAVE_CURRENT_INDEX',
+  payload: index,
+});
+
 export const requestQuestionsAPI = () => ({
   type: 'REQUEST_QUESTIONS',
   payload: {

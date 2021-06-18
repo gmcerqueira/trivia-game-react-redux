@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { fetchQuestions } from '../actions/gameAction';
 import { saveScore, saveAssertions } from '../actions/userAction';
+import chosenAnswer from '../services/auxFunctions';
 import '../App.css';
+import BtnNextQuestion from '../components/BtnNextQuestion';
+import Header from '../components/Header';
 
 class Game extends Component {
   constructor(props) {
@@ -20,7 +23,6 @@ class Game extends Component {
     this.joinAnswers = this.joinAnswers.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.chosenAnswer = this.chosenAnswer.bind(this);
     this.startTimer = this.startTimer.bind(this);
     this.correctAnswerSumPoints = this.correctAnswerSumPoints.bind(this);
   }
@@ -62,13 +64,11 @@ class Game extends Component {
     const { currentQuestion, points, assertions } = this.state;
     const {
       questions,
-      savePlayerScore,
       savePlayerAssertions,
       name,
       gravatarEmail,
     } = this.props;
     if (currentQuestion === questions.length - 1) {
-      savePlayerScore(points);
       savePlayerAssertions(assertions);
       this.setState({ endGame: true }, () => {
         const ranking = JSON.parse(localStorage.getItem('ranking')) || [];
@@ -98,7 +98,7 @@ class Game extends Component {
 
   correctAnswerSumPoints() {
     const { points, currentQuestion, timer, assertions } = this.state;
-    const { questions, name, gravatarEmail } = this.props;
+    const { questions, name, gravatarEmail, savePlayerScore } = this.props;
     const { difficulty } = questions[currentQuestion];
     const levelHard = 3;
     const basePoints = 10;
@@ -119,6 +119,7 @@ class Game extends Component {
     const totalPoints = points + (basePoints + timer * pointsDifficulty);
     const totalAssertions = assertions + 1;
     this.setState({ points: totalPoints, assertions: totalAssertions }, () => {
+      savePlayerScore(totalPoints);
       localStorage.setItem(
         'state',
         JSON.stringify({
@@ -133,18 +134,6 @@ class Game extends Component {
     });
   }
 
-  chosenAnswer() {
-    const buttons = document.querySelectorAll('[type=button]');
-    buttons.forEach((button) => {
-      if (button.dataset.answer === 'correct') {
-        button.classList.add('correct');
-      }
-      if (button.dataset.answer === 'incorrect') {
-        button.classList.add('incorrect');
-      }
-    });
-  }
-
   startTimer() {
     const interval = 1000;
     const { timer, stopTimer } = this.state;
@@ -153,7 +142,7 @@ class Game extends Component {
     }, interval);
     if (timer === 0 || stopTimer) {
       clearTimeout(timerRun);
-      this.chosenAnswer();
+      chosenAnswer();
     }
   }
 
@@ -168,7 +157,7 @@ class Game extends Component {
           data-testid="correct-answer"
           data-answer="correct"
           onClick={ () => {
-            this.chosenAnswer();
+            chosenAnswer();
             this.setState({ stopTimer: true });
             this.correctAnswerSumPoints(this);
           } }
@@ -184,7 +173,7 @@ class Game extends Component {
             currentQuestion
           ].incorrect_answers.indexOf(option)}` }
           onClick={ () => {
-            this.chosenAnswer();
+            chosenAnswer();
             this.setState({ stopTimer: true });
           } }
           data-answer="incorrect"
@@ -218,30 +207,14 @@ class Game extends Component {
   }
 
   render() {
-    const { name, gravatarEmail, questions } = this.props;
-    const { points, timer, stopTimer, endGame, currentQuestion } = this.state;
+    const { timer, stopTimer, endGame } = this.state;
     return (
       <>
         {endGame && <Redirect to="/feedback" />}
-        <header>
-          <img
-            src={ `https://www.gravatar.com/avatar/${gravatarEmail}` }
-            alt=""
-            data-testid="header-profile-picture"
-          />
-          <p data-testid="header-player-name">{name}</p>
-          <p data-testid="header-score">{points}</p>
-          <p>{`${currentQuestion + 1} of ${questions.length}`}</p>
-        </header>
+        <Header />
         {this.renderMain()}
         {(!timer || stopTimer) && (
-          <button
-            type="button"
-            data-testid="btn-next"
-            onClick={ this.nextQuestion }
-          >
-            Próxima
-          </button>
+          <BtnNextQuestion nextQuestion={ this.nextQuestion } />
         )}
       </>
     );
