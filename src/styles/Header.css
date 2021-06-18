@@ -1,0 +1,47 @@
+/*
+#fcfcfc
+#038C33;
+#025920;
+#01260E;
+#05F240;
+#0D0D0D;
+*/
+
+.header-component {
+  background-color: #025920;
+  color: #fcfcfc;
+  display: flex;
+  font-family: Bangers , cursive;
+  font-size: 2rem;
+  justify-content: center;
+  text-transform: uppercase;
+}
+
+.header-container {
+  align-items: center;
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+  max-width: 700px;
+  padding: 1.5rem;
+}
+
+.header-profile {
+  align-items: center;
+  display: flex;
+}
+
+.header-profile-img {
+  border-radius: 50%;
+  height: 100px;
+  margin-right: 1rem;
+}
+
+/*
+#fcfcfc
+#038C33;
+#025920;
+#01260E;
+#05F240;
+#0D0D0D;
+*/
