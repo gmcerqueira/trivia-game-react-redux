@@ -1,16 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap') ;
+@import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+}
 
 .App {
   background-color: #b8b8b8;
   height: 100vh;
-}
-
-.correct {
-  border: 3px solid rgb(6, 240, 15);
-}
-
-.incorrect {
-  border: 3px solid red;
 }
 
 .App-logo {

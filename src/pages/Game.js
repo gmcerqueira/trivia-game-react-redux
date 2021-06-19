@@ -6,8 +6,9 @@ import { fetchQuestions } from '../actions/gameAction';
 import { saveScore, saveAssertions } from '../actions/userAction';
 import chosenAnswer from '../services/auxFunctions';
 import '../App.css';
-import BtnNextQuestion from '../components/BtnNextQuestion';
+import BtnNext from '../components/BtnNext';
 import Header from '../components/Header';
+import '../styles/Game.css';
 
 class Game extends Component {
   constructor(props) {
@@ -62,12 +63,7 @@ class Game extends Component {
 
   nextQuestion() {
     const { currentQuestion, points, assertions } = this.state;
-    const {
-      questions,
-      savePlayerAssertions,
-      name,
-      gravatarEmail,
-    } = this.props;
+    const { questions, savePlayerAssertions, name, gravatarEmail } = this.props;
     if (currentQuestion === questions.length - 1) {
       savePlayerAssertions(assertions);
       this.setState({ endGame: true }, () => {
@@ -84,6 +80,7 @@ class Game extends Component {
           currentQuestion: currentQuestion + 1,
           timer: 30,
           stopTimer: false,
+          options: [],
         },
         () => this.joinAnswers(),
       );
@@ -152,6 +149,7 @@ class Game extends Component {
     return options
       .map((option, index) => (option === questions[currentQuestion].correct_answer ? (
         <button
+          className="question-option"
           type="button"
           key={ index }
           data-testid="correct-answer"
@@ -167,6 +165,7 @@ class Game extends Component {
         </button>
       ) : (
         <button
+          className="question-option"
           type="button"
           key={ index }
           data-testid={ `wrong-answer-${questions[
@@ -185,37 +184,44 @@ class Game extends Component {
   }
 
   renderMain() {
-    const { currentQuestion, timer } = this.state;
+    const { currentQuestion, timer, stopTimer } = this.state;
     const { questions } = this.props;
     return (
-      <main>
+      <main className="main-component">
+        <p className="main-timer">{`Timer: ${timer}`}</p>
+
         {questions.length && (
-          <div key={ currentQuestion }>
+          <div className="main-container">
             {this.startTimer()}
-            <p data-testid="question-category">
-              {questions[currentQuestion].category}
-            </p>
-            <p data-testid="question-text">
-              {questions[currentQuestion].question}
-            </p>
-            {this.renderOptions()}
-            <p>{timer}</p>
+            <div className="question-component">
+              <div className="question-container">
+                <p className="question-category" data-testid="question-category">
+                  {questions[currentQuestion].category}
+                </p>
+                <p className="question-text" data-testid="question-text">
+                  {questions[currentQuestion].question}
+                </p>
+              </div>
+              <div className="question-options">
+                {this.renderOptions()}
+              </div>
+            </div>
           </div>
+        )}
+        {(!timer || stopTimer) && (
+          <BtnNext nextQuestion={ this.nextQuestion } />
         )}
       </main>
     );
   }
 
   render() {
-    const { timer, stopTimer, endGame } = this.state;
+    const { endGame } = this.state;
     return (
       <>
         {endGame && <Redirect to="/feedback" />}
         <Header />
         {this.renderMain()}
-        {(!timer || stopTimer) && (
-          <BtnNextQuestion nextQuestion={ this.nextQuestion } />
-        )}
       </>
     );
   }

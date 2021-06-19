@@ -1,21 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import '../styles/BtnNext.css';
 
-export default class BtnNextQuestion extends Component {
+export default class BtnNext extends Component {
   render() {
     const { nextQuestion } = this.props;
     return (
       <button
+        className="next-btn"
         type="button"
         data-testid="btn-next"
         onClick={ nextQuestion }
       >
-        Próxima
+        NEXT
       </button>
     );
   }
 }
 
-BtnNextQuestion.propTypes = {
+BtnNext.propTypes = {
   nextQuestion: PropTypes.func.isRequired,
 };
