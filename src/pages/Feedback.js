@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Header from '../components/Header';
 
 class Feedback extends Component {
   constructor(props) {
@@ -21,18 +22,10 @@ class Feedback extends Component {
   }
 
   render() {
-    const { name, gravatarEmail, score, assertions } = this.props;
+    const { score, assertions } = this.props;
     return (
       <>
-        <header>
-          <img
-            src={ `https://www.gravatar.com/avatar/${gravatarEmail}` }
-            alt=""
-            data-testid="header-profile-picture"
-          />
-          <p data-testid="header-player-name">{name}</p>
-          <p data-testid="header-score">{score}</p>
-        </header>
+        <Header />
         <main>
           <p data-testid="feedback-text">{this.showMessage(assertions)}</p>
           <p data-testid="feedback-total-question">{assertions}</p>
@@ -60,8 +53,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = () => ({});
 
 Feedback.propTypes = {
-  name: PropTypes.string.isRequired,
-  gravatarEmail: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   assertions: PropTypes.number.isRequired,
 };
