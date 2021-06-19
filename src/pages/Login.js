@@ -67,6 +67,7 @@ class Login extends Component {
   render() {
     return (
       <div className="login-page">
+        <h1 className="login-title">T R I V I A</h1>
         <div className="login-container">
           <label className="login-label" htmlFor="email">
             <input
