@@ -14,7 +14,7 @@ const initialState = {
   gravatarEmail: 'def584e93ab1b50012af443500b16fca',
   score: 0,
   assertions: 0,
-  token: 'f06e79376680249d8cab938cdd10795dd512a72c451ef737cec630bf9cf54018',
+  token: '60a3b223474277a7efe9c15c82aa8ca981bbf43029136b13bcf033f83f09f34c',
   isFetching: false,
 };
 

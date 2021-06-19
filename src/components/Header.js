@@ -8,8 +8,8 @@ class Header extends Component {
     const { name, gravatarEmail, score } = this.props;
     // const { points, timer, stopTimer, endGame, currentQuestion } = this.state;
     return (
-      <div className="header-component">
-        <header className="header-container">
+      <header className="header-component">
+        <div className="header-container">
           <div className="header-profile">
             <img
               className="header-profile-img"
@@ -20,8 +20,8 @@ class Header extends Component {
             <p data-testid="header-player-name">{name}</p>
           </div>
           <p data-testid="header-score">{`Score : ${score}`}</p>
-        </header>
-      </div>
+        </div>
+      </header>
     );
   }
 }
