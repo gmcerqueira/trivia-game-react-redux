@@ -41,12 +41,12 @@ class Game extends Component {
         },
       }),
     );
-    requestQuestions(token);
   }
 
   componentDidUpdate(prevProps) {
-    const { questions } = this.props;
+    const { questions, requestQuestions, token } = this.props;
     if (questions !== prevProps.questions) this.joinAnswers();
+    if (token !== prevProps.token) requestQuestions(token);
   }
 
   joinAnswers() {

@@ -9,12 +9,12 @@ import {
 } from '../actions/index';
 
 const initialState = {
-  email: 'gustavomc_53@hotmail.com',
-  name: 'Gustavo ',
-  gravatarEmail: 'def584e93ab1b50012af443500b16fca',
-  score: 132,
-  assertions: 3,
-  token: '9ea59238bb75cb887d60d45fa2b7038e009e3bcc2b3dd2d91cc01e7c68642960',
+  email: '',
+  name: '',
+  gravatarEmail: '',
+  score: 0,
+  assertions: 0,
+  token: '',
   isFetching: false,
 };
 
