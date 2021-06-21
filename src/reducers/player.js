@@ -13,8 +13,8 @@ const initialState = {
   name: 'Gustavo ',
   gravatarEmail: 'def584e93ab1b50012af443500b16fca',
   score: 132,
-  assertions: 0,
-  token: '60a3b223474277a7efe9c15c82aa8ca981bbf43029136b13bcf033f83f09f34c',
+  assertions: 3,
+  token: '9ea59238bb75cb887d60d45fa2b7038e009e3bcc2b3dd2d91cc01e7c68642960',
   isFetching: false,
 };
 

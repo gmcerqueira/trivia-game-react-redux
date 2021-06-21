@@ -1,0 +1,84 @@
+/*
+#fcfcfc
+#038C33;
+#025920;
+#01260E;
+#05F240;
+#0D0D0D;
+*/
+
+.feedback-component {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.feedback-container {
+  align-items: center;
+  background-color: #ccc;
+  border-radius: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  justify-content: center;
+  margin-top: 4.2rem;
+  padding: 1.5rem;
+  width: 350px;
+}
+
+.feedback-text {
+  color: #038c33;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.feedback-total-question {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+
+}
+
+.feedback-total-score {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+
+}
+
+.feedback-buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+.feedback-btn {
+  border: none;
+  border-radius: 0.5rem;
+  color: #fcfcfc;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.8rem 1.5rem;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.btn-play-again {
+  background-color: #038c33;
+  margin-bottom: 1rem;
+}
+
+.btn-ranking {
+  background-color: #01260e;
+}
+
+/*
+#fcfcfc
+#038C33;
+#025920;
+#01260E;
+#05F240;
+#0D0D0D;
+*/
