@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import '../styles/Ranking.css';
+
 class Ranking extends Component {
   constructor(props) {
     super(props);
@@ -20,46 +22,36 @@ class Ranking extends Component {
   render() {
     const ranking = JSON.parse(localStorage.getItem('ranking'));
     return (
-      <>
-        <h1 data-testid="ranking-title">
-          Ranking
-        </h1>
+      <div className="ranking-page">
+        <div className="ranking-container">
+          <h1 className="ranking-title" data-testid="ranking-title">
+            R a n k i n g
+          </h1>
+          <section className="ranking-table">
+            {ranking && ranking.sort((a, b) => {
+              const minusOne = -1;
+              if (a.score < b.score) return 1;
+              if (a.score > b.score) return minusOne;
+              return 0;
+            }).map((player, index) => (
+              <div className="ranking-line" key={ index }>
+                <img className="ranking-img" src={ `https://www.gravatar.com/avatar/${player.gravatarEmail}` } alt="" />
 
-        <table>
-          <tr>
-            <th>
-              Image
-            </th>
-            <th>
-              Name
-            </th>
-            <th>
-              Score
-            </th>
-          </tr>
-          {ranking && ranking.sort((a, b) => {
-            const minusOne = -1;
-            if (a.score < b.score) return 1;
-            if (a.score > b.score) return minusOne;
-            return 0;
-          }).map((player, index) => (
-            <tr key={ index }>
-              <td>
-                <img src={ `https://www.gravatar.com/avatar/${player.gravatarEmail}` } alt="" />
-              </td>
-              <td data-testid={ `player-name-${index}` }>
-                { player.name }
-              </td>
-              <td data-testid={ `player-score-${index}` }>
-                { player.score }
-              </td>
-            </tr>
-          ))}
-        </table>
-        <Link to="/">
-          <button type="button" data-testid="btn-go-home">Voltar ao inicio</button>
-        </Link>
-      </>
+                <p className="ranking-name" data-testid={ `player-name-${index}` }>
+                  { player.name }
+                </p>
+                <p className="ranking-score" data-testid={ `player-score-${index}` }>
+                  {`${player.score} points`}
+                </p>
+              </div>
+            ))}
+          </section>
+
+          <Link to="/" className="btn-go-home" data-testid="btn-go-home">
+            HOME
+          </Link>
+        </div>
+      </div>
     );
   }
 }

@@ -29,7 +29,7 @@ class Game extends Component {
   }
 
   componentDidMount() {
-    const { requestQuestions, token, name } = this.props;
+    const { name } = this.props;
     localStorage.setItem(
       'state',
       JSON.stringify({

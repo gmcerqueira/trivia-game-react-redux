@@ -1,0 +1,83 @@
+/*
+#fcfcfc
+#038C33;
+#025920;
+#01260E;
+#05F240;
+#0D0D0D;
+*/
+
+.ranking-page {
+  display: flex;
+  justify-content: center;
+}
+
+.ranking-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: space-evenly;
+}
+
+
+.ranking-title {
+  color: #038c33;
+  font-family: Bangers , cursive;
+  font-size: 5rem;
+}
+
+.ranking-table {
+  background-color: #ccc;
+  border-radius: 0.8rem;
+  color: #025920;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.5rem;
+  font-weight: 600;
+  height: 70vh;
+  overflow: auto;
+  padding: 0 2rem;
+  text-align: center;
+
+}
+
+.ranking-line {
+  align-items: center;
+  border-bottom: 1px solid #b8b8b8;
+  display: flex;
+  padding: 1rem 0;
+}
+
+
+.ranking-img {
+  border-radius: 50%;
+}
+
+.ranking-name {
+  margin: 0 2rem;
+  text-transform: uppercase;
+}
+
+.btn-go-home {
+  background-color: #038c33;
+  border: none;
+  border-radius: 0.5rem;
+  color: #fcfcfc;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.8rem 1.5rem;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+/*
+#fcfcfc
+#038C33;
+#025920;
+#01260E;
+#05F240;
+#0D0D0D;
+*/
