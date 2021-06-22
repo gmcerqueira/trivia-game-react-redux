@@ -71,6 +71,7 @@ class Login extends Component {
         <div className="login-container">
           <label className="login-label" htmlFor="email">
             <input
+              autoComplete="off"
               className="login-input"
               data-testid="input-gravatar-email"
               id="email"
@@ -81,6 +82,7 @@ class Login extends Component {
           </label>
           <label className="login-label" htmlFor="playerName">
             <input
+              autoComplete="off"
               className="login-input"
               data-testid="input-player-name"
               id="playerName"
