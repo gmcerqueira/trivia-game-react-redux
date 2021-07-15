@@ -4,11 +4,12 @@ import {
   REQUEST_CATEGORIES_SUCCESS,
   REQUEST_CATEGORIES_ERROR,
   CHANGE_CATEGORY,
+  CHANGE_DIFFICULTY,
 } from '../actions/index';
 
 const initialState = {
   categories: [],
-  difficulty: 'easy',
+  difficulty: '',
   category: '',
   type: '',
   isFetching: false,
@@ -21,6 +22,7 @@ function config(state = initialState, { type, payload }) {
   case REQUEST_CATEGORIES_SUCCESS:
   case REQUEST_CATEGORIES_ERROR:
   case CHANGE_CATEGORY:
+  case CHANGE_DIFFICULTY:
     return {
       ...state,
       ...payload,

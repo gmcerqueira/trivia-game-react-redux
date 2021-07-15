@@ -5,6 +5,7 @@ import {
   REQUEST_CATEGORIES_SUCCESS,
   REQUEST_CATEGORIES_ERROR,
   CHANGE_CATEGORY,
+  CHANGE_DIFFICULTY,
 } from './index';
 
 export const requestCategoriesAPI = () => ({
@@ -29,10 +30,18 @@ export const requestCategoriesAPIError = (error) => ({
     isFetching: false,
   },
 });
+
 export const changeCategory = (category) => ({
   type: CHANGE_CATEGORY,
   payload: {
     category,
+  },
+});
+
+export const changeDifficulty = (difficulty) => ({
+  type: CHANGE_DIFFICULTY,
+  payload: {
+    difficulty,
   },
 });
 

@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { changeCategory, fetchCategories } from '../actions/configAction';
+import {
+  changeCategory,
+  changeDifficulty,
+  fetchCategories,
+} from '../actions/configAction';
 
 const falseSortReturn = -1;
 class Config extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -16,30 +19,54 @@ class Config extends Component {
     requestCategories();
   }
 
-  handleChange({ target: { value } }) {
-    const { updateCategory } = this.props;
-    console.log(value);
-    updateCategory(value);
+  renderCategoryOptions() {
+    const { categories, updateCategory } = this.props;
+    return (
+      <label htmlFor="categories">
+        Category
+        <select
+          name="categories"
+          id="category"
+          onChange={ ({ target: { value } }) => updateCategory(value) }
+        >
+          <option hidden aria-label="default" />
+          {categories
+            .sort((a, b) => (a.name > b.name ? 1 : falseSortReturn))
+            .map(({ id, name }) => (
+              <option key={ id } value={ id }>
+                {name}
+              </option>
+            ))}
+        </select>
+      </label>
+    );
+  }
+
+  renderDifficultyOptions() {
+    const { updateDifficulty } = this.props;
+    return (
+      <label htmlFor="categories">
+        Category
+        <select
+          name="categories"
+          id="category"
+          onChange={ ({ target: { value } }) => updateDifficulty(value) }
+        >
+          <option hidden aria-label="default" />
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+      </label>
+    );
   }
 
   render() {
-    const { categories } = this.props;
     return (
       <div>
         <h1 data-testid="settings-title">Configurações</h1>
-        <label htmlFor="categories">
-          Category
-          <select name="categories" id="category" onChange={ this.handleChange }>
-            <option hidden aria-label="default" />
-            {categories
-              .sort((a, b) => ((a.name > b.name) ? 1 : falseSortReturn))
-              .map(({ id, name }) => (
-                <option key={ id } value={ id }>
-                  {name}
-                </option>
-              ))}
-          </select>
-        </label>
+        {this.renderCategoryOptions()}
+        {this.renderDifficultyOptions()}
       </div>
     );
   }
@@ -52,6 +79,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   requestCategories: () => dispatch(fetchCategories()),
   updateCategory: (category) => dispatch(changeCategory(category)),
+  updateDifficulty: (difficulty) => dispatch(changeDifficulty(difficulty)),
 });
 
 Config.propTypes = {
