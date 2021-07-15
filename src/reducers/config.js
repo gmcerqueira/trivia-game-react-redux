@@ -3,6 +3,7 @@ import {
   REQUEST_CATEGORIES,
   REQUEST_CATEGORIES_SUCCESS,
   REQUEST_CATEGORIES_ERROR,
+  CHANGE_CATEGORY,
 } from '../actions/index';
 
 const initialState = {
@@ -19,6 +20,7 @@ function config(state = initialState, { type, payload }) {
   case REQUEST_CATEGORIES:
   case REQUEST_CATEGORIES_SUCCESS:
   case REQUEST_CATEGORIES_ERROR:
+  case CHANGE_CATEGORY:
     return {
       ...state,
       ...payload,
