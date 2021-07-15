@@ -11,7 +11,7 @@ const initialState = {
   isFetching: false,
 };
 
-function gameReducer(state = initialState, action) {
+function game(state = initialState, action) {
   switch (action.type) {
   case REQUEST_QUESTIONS:
   case REQUEST_QUESTIONS_SUCCESS:
@@ -27,4 +27,4 @@ function gameReducer(state = initialState, action) {
   }
 }
 
-export default gameReducer;
+export default game;

@@ -2,8 +2,13 @@ import md5 from 'crypto-js/md5';
 import he from 'he';
 
 const TOKEN_URL = 'https://opentdb.com/api_token.php?command=request';
+const CATEGORIES_URL = 'https://opentdb.com/api_category.php';
 const GRAVATA_URL = 'https://www.gravatar.com/avatar/';
 const QUESTIONS_URL = 'https://opentdb.com/api.php?amount=5&token=';
+
+export const requestCategories = () => fetch(CATEGORIES_URL)
+  .then((res) => res.json())
+  .then((res) => res.trivia_categories);
 
 export const requestToken = () => fetch(TOKEN_URL)
   .then((res) => res.json())

@@ -232,7 +232,7 @@ const mapStateToProps = (state) => ({
   gravatarEmail: state.player.gravatarEmail,
   token: state.player.token,
   assertions: state.player.assertions,
-  questions: state.gameReducer.questions,
+  questions: state.game.questions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
