@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { fetchQuestions } from '../actions/gameAction';
-import { saveScore, saveAssertions } from '../actions/userAction';
+import { saveScore, saveAssertions } from '../actions/playerAction';
 import chosenAnswer from '../services/auxFunctions';
 import '../App.css';
 import BtnNext from '../components/BtnNext';

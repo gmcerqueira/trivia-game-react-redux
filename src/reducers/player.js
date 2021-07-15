@@ -1,5 +1,4 @@
 /* eslint-disable complexity */
-/* eslint-disable max-lines-per-function */
 // Esse reducer será responsável por tratar as informações da pessoa usuária
 import {
   SAVE_EMAIL,
@@ -35,7 +34,6 @@ function player(state = initialState, action) {
     return {
       ...state,
       ...action.payload,
-
     };
 
   default:

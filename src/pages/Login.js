@@ -8,7 +8,7 @@ import {
   saveName,
   saveEmail,
   saveImg,
-} from '../actions/userAction';
+} from '../actions/playerAction';
 
 import '../styles/Login.css';
 
