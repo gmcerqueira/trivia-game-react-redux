@@ -33,20 +33,15 @@ class Game extends Component {
     localStorage.setItem(
       'state',
       JSON.stringify({
-        player: {
-          name,
-          assertions: 0,
-          score: 0,
-          gravatarEmail: 'gravatarEmail',
-        },
+        player: { name, assertions: 0, score: 0, gravatarEmail: 'gravatarEmail' },
       }),
     );
   }
 
   componentDidUpdate(prevProps) {
-    const { questions, requestQuestions, token } = this.props;
+    const { questions, requestQuestions, token, category, difficulty, type } = this.props;
     if (questions !== prevProps.questions) this.joinAnswers();
-    if (token !== prevProps.token) requestQuestions(token);
+    if (token !== prevProps.token) requestQuestions(token, category, difficulty, type);
   }
 
   joinAnswers() {
@@ -146,8 +141,8 @@ class Game extends Component {
   renderOptions() {
     const { currentQuestion, options, timer, stopTimer } = this.state;
     const { questions } = this.props;
-    return options
-      .map((option, index) => (option === questions[currentQuestion].correct_answer ? (
+    return options.map(
+      (option, index) => (option === questions[currentQuestion].correct_answer ? (
         <button
           className="question-option"
           type="button"
@@ -180,7 +175,8 @@ class Game extends Component {
         >
           {option}
         </button>
-      )));
+      )),
+    );
   }
 
   renderMain() {
@@ -190,27 +186,26 @@ class Game extends Component {
       <main className="main-component">
         <p className="main-timer">{`Timer: ${timer}`}</p>
 
-        {questions.length && (
+        {questions.length ? (
           <div className="main-container">
             {this.startTimer()}
             <div className="question-component">
               <div className="question-container">
-                <p className="question-category" data-testid="question-category">
+                <p
+                  className="question-category"
+                  data-testid="question-category"
+                >
                   {questions[currentQuestion].category}
                 </p>
                 <p className="question-text" data-testid="question-text">
                   {questions[currentQuestion].question}
                 </p>
               </div>
-              <div className="question-options">
-                {this.renderOptions()}
-              </div>
+              <div className="question-options">{this.renderOptions()}</div>
             </div>
           </div>
-        )}
-        {(!timer || stopTimer) && (
-          <BtnNext nextQuestion={ this.nextQuestion } />
-        )}
+        ) : 'Loading...'}
+        {(!timer || stopTimer) && <BtnNext nextQuestion={ this.nextQuestion } />}
       </main>
     );
   }
@@ -227,16 +222,24 @@ class Game extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  name: state.player.name,
-  gravatarEmail: state.player.gravatarEmail,
-  token: state.player.token,
-  assertions: state.player.assertions,
-  questions: state.game.questions,
+const mapStateToProps = ({ player, game, config }) => ({
+  name: player.name,
+  gravatarEmail: player.gravatarEmail,
+  token: player.token,
+  assertions: player.assertions,
+  questions: game.questions,
+  category: config.category,
+  difficulty: config.difficulty,
+  type: config.type,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  requestQuestions: (token) => dispatch(fetchQuestions(token)),
+  requestQuestions: (
+    token,
+    category,
+    difficulty,
+    type,
+  ) => dispatch(fetchQuestions(token, category, difficulty, type)),
   savePlayerScore: (score) => dispatch(saveScore(score)),
   savePlayerAssertions: (assertions) => dispatch(saveAssertions(assertions)),
 });
@@ -245,6 +248,9 @@ Game.propTypes = {
   name: PropTypes.string.isRequired,
   gravatarEmail: PropTypes.string.isRequired,
   token: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
+  difficulty: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
   requestQuestions: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   savePlayerScore: PropTypes.func.isRequired,

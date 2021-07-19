@@ -4,7 +4,7 @@ import he from 'he';
 const TOKEN_URL = 'https://opentdb.com/api_token.php?command=request';
 const CATEGORIES_URL = 'https://opentdb.com/api_category.php';
 const GRAVATA_URL = 'https://www.gravatar.com/avatar/';
-const QUESTIONS_URL = 'https://opentdb.com/api.php?amount=5&token=';
+const QUESTIONS_URL = 'https://opentdb.com/api.php?amount=5';
 
 export const requestCategories = () => fetch(CATEGORIES_URL)
   .then((res) => res.json())
@@ -25,7 +25,10 @@ export const requestGravatarImage = (email) => {
 
 const decodeOptions = (options) => options.map((option) => he.decode(option));
 
-export const requestQuestions = (token) => fetch(`${QUESTIONS_URL}${token}`)
+// https://opentdb.com/api.php?amount=10&category=9&difficulty=medium&type=multiple
+export const requestQuestions = (token, c, d, ty) => fetch(
+  `${QUESTIONS_URL}&category=${c}&difficulty=${d}&type=${ty}&token=${token}`,
+)
   .then((res) => res.json())
   .then((res) => {
     const { results } = res;

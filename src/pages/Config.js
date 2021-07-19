@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import {
   changeCategory,
   changeDifficulty,
@@ -81,19 +82,28 @@ class Config extends Component {
   }
 
   render() {
+    const { isFetching } = this.props;
     return (
       <div>
         <h1 data-testid="settings-title">Configurações</h1>
-        {this.renderCategoryOptions()}
-        {this.renderDifficultyOptions()}
-        {this.renderTypeOptions()}
+        {isFetching
+          ? 'Loading...'
+          : (
+            <>
+              {this.renderCategoryOptions()}
+              {this.renderDifficultyOptions()}
+              {this.renderTypeOptions()}
+              <Link to="/" onClick={ () => console.log('click') }>SAVE</Link>
+            </>
+          )}
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  categories: state.config.categories,
+const mapStateToProps = ({ config }) => ({
+  categories: config.categories,
+  isFetching: config.isFetching,
 });
 
 const mapDispatchToProps = (dispatch) => ({

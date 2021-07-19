@@ -35,9 +35,9 @@ export const requestQuestionsAPIError = (error) => ({
   },
 });
 
-export const fetchQuestions = (token) => (dispatch) => {
+export const fetchQuestions = (token, category, difficulty, type) => (dispatch) => {
   dispatch(requestQuestionsAPI());
-  requestQuestions(token)
+  requestQuestions(token, category, difficulty, type)
     .then((questions) => dispatch(requestQuestionsAPISuccess(questions)))
     .catch(() => dispatch(requestQuestionsAPIError('Não foi possível recuperar')));
 };
