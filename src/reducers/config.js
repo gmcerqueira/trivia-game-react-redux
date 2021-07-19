@@ -5,6 +5,7 @@ import {
   REQUEST_CATEGORIES_ERROR,
   CHANGE_CATEGORY,
   CHANGE_DIFFICULTY,
+  CHANGE_TYPE,
 } from '../actions/index';
 
 const initialState = {
@@ -23,6 +24,7 @@ function config(state = initialState, { type, payload }) {
   case REQUEST_CATEGORIES_ERROR:
   case CHANGE_CATEGORY:
   case CHANGE_DIFFICULTY:
+  case CHANGE_TYPE:
     return {
       ...state,
       ...payload,

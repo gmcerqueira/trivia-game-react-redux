@@ -6,6 +6,7 @@ import {
   REQUEST_CATEGORIES_ERROR,
   CHANGE_CATEGORY,
   CHANGE_DIFFICULTY,
+  CHANGE_TYPE,
 } from './index';
 
 export const requestCategoriesAPI = () => ({
@@ -42,6 +43,13 @@ export const changeDifficulty = (difficulty) => ({
   type: CHANGE_DIFFICULTY,
   payload: {
     difficulty,
+  },
+});
+
+export const changeType = (type) => ({
+  type: CHANGE_TYPE,
+  payload: {
+    type,
   },
 });
 

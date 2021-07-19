@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import {
   changeCategory,
   changeDifficulty,
+  changeType,
   fetchCategories,
 } from '../actions/configAction';
 
@@ -61,12 +62,31 @@ class Config extends Component {
     );
   }
 
+  renderTypeOptions() {
+    const { updateType } = this.props;
+    return (
+      <label htmlFor="categories">
+        Type
+        <select
+          name="categories"
+          id="category"
+          onChange={ ({ target: { value } }) => updateType(value) }
+        >
+          <option hidden aria-label="default" />
+          <option value="boolean">True or False</option>
+          <option value="multiple">Multiple choice</option>
+        </select>
+      </label>
+    );
+  }
+
   render() {
     return (
       <div>
         <h1 data-testid="settings-title">Configurações</h1>
         {this.renderCategoryOptions()}
         {this.renderDifficultyOptions()}
+        {this.renderTypeOptions()}
       </div>
     );
   }
@@ -80,6 +100,7 @@ const mapDispatchToProps = (dispatch) => ({
   requestCategories: () => dispatch(fetchCategories()),
   updateCategory: (category) => dispatch(changeCategory(category)),
   updateDifficulty: (difficulty) => dispatch(changeDifficulty(difficulty)),
+  updateType: (type) => dispatch(changeType(type)),
 });
 
 Config.propTypes = {
