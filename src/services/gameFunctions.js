@@ -10,6 +10,6 @@ export function chosenAnswer() {
   });
 }
 
-export function setLocalStorage(item) {
-  localStorage.setItem('state', JSON.stringify(item));
+export function setLocalStorage(item, obj) {
+  localStorage.setItem(item, JSON.stringify(obj));
 }

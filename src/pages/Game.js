@@ -30,7 +30,7 @@ class Game extends Component {
 
   componentDidMount() {
     const { name } = this.props;
-    setLocalStorage({
+    setLocalStorage('state', {
       player: { name, assertions: 0, score: 0, gravatarEmail: 'gravatarEmail' },
     });
   }
@@ -61,7 +61,7 @@ class Game extends Component {
       this.setState({ endGame: true }, () => {
         const ranking = JSON.parse(localStorage.getItem('ranking')) || [];
         localStorage.removeItem('questions');
-        setLocalStorage([...ranking, { name, score: points, gravatarEmail }]);
+        setLocalStorage('ranking', [...ranking, { name, score: points, gravatarEmail }]);
       });
     } else {
       this.setState(
@@ -104,7 +104,7 @@ class Game extends Component {
     const totalAssertions = assertions + 1;
     this.setState({ points: totalPoints, assertions: totalAssertions }, () => {
       savePlayerScore(totalPoints);
-      setLocalStorage({
+      setLocalStorage('state', {
         player: {
           name,
           assertions: totalAssertions,
