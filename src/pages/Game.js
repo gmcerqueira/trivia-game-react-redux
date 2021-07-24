@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { fetchQuestions } from '../actions/gameAction';
 import { saveScore, saveAssertions } from '../actions/playerAction';
-import chosenAnswer from '../services/auxFunctions';
+import { chosenAnswer, setLocalStorage } from '../services/gameFunctions';
 import '../App.css';
 import BtnNext from '../components/BtnNext';
 import Header from '../components/Header';
@@ -30,12 +30,9 @@ class Game extends Component {
 
   componentDidMount() {
     const { name } = this.props;
-    localStorage.setItem(
-      'state',
-      JSON.stringify({
-        player: { name, assertions: 0, score: 0, gravatarEmail: 'gravatarEmail' },
-      }),
-    );
+    setLocalStorage({
+      player: { name, assertions: 0, score: 0, gravatarEmail: 'gravatarEmail' },
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -64,10 +61,7 @@ class Game extends Component {
       this.setState({ endGame: true }, () => {
         const ranking = JSON.parse(localStorage.getItem('ranking')) || [];
         localStorage.removeItem('questions');
-        localStorage.setItem(
-          'ranking',
-          JSON.stringify([...ranking, { name, score: points, gravatarEmail }]),
-        );
+        setLocalStorage([...ranking, { name, score: points, gravatarEmail }]);
       });
     } else {
       this.setState(
@@ -83,9 +77,7 @@ class Game extends Component {
   }
 
   handleChange({ target: { value, id } }) {
-    this.setState({
-      [id]: value,
-    });
+    this.setState({ [id]: value });
   }
 
   correctAnswerSumPoints() {
@@ -112,17 +104,14 @@ class Game extends Component {
     const totalAssertions = assertions + 1;
     this.setState({ points: totalPoints, assertions: totalAssertions }, () => {
       savePlayerScore(totalPoints);
-      localStorage.setItem(
-        'state',
-        JSON.stringify({
-          player: {
-            name,
-            assertions: totalAssertions,
-            score: totalPoints,
-            gravatarEmail,
-          },
-        }),
-      );
+      setLocalStorage({
+        player: {
+          name,
+          assertions: totalAssertions,
+          score: totalPoints,
+          gravatarEmail,
+        },
+      });
     });
   }
 

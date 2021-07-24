@@ -1,4 +1,4 @@
-export default function chosenAnswer() {
+export function chosenAnswer() {
   const buttons = document.querySelectorAll('[type=button]');
   buttons.forEach((button) => {
     if (button.dataset.answer === 'correct') {
@@ -8,4 +8,8 @@ export default function chosenAnswer() {
       button.style = 'background-color: red;color:#fcfcfc;';
     }
   });
+}
+
+export function setLocalStorage(item) {
+  localStorage.setItem('state', JSON.stringify(item));
 }
