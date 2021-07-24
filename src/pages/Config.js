@@ -86,16 +86,16 @@ class Config extends Component {
     return (
       <div>
         <h1 data-testid="settings-title">Configurações</h1>
-        {isFetching
-          ? 'Loading...'
-          : (
-            <>
-              {this.renderCategoryOptions()}
-              {this.renderDifficultyOptions()}
-              {this.renderTypeOptions()}
-              <Link to="/" onClick={ () => console.log('click') }>SAVE</Link>
-            </>
-          )}
+        {isFetching ? (
+          'Loading...'
+        ) : (
+          <>
+            {this.renderCategoryOptions()}
+            {this.renderDifficultyOptions()}
+            {this.renderTypeOptions()}
+            <Link to="/">SAVE</Link>
+          </>
+        )}
       </div>
     );
   }
