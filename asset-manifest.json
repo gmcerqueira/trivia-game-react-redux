@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/trivia-game-react-redux/static/css/main.e092d3f0.chunk.css",
-    "main.js": "/trivia-game-react-redux/static/js/main.5cd6aad3.chunk.js",
-    "main.js.map": "/trivia-game-react-redux/static/js/main.5cd6aad3.chunk.js.map",
+    "main.css": "/trivia-game-react-redux/static/css/main.4a2da278.chunk.css",
+    "main.js": "/trivia-game-react-redux/static/js/main.f66e0865.chunk.js",
+    "main.js.map": "/trivia-game-react-redux/static/js/main.f66e0865.chunk.js.map",
     "runtime-main.js": "/trivia-game-react-redux/static/js/runtime-main.4a16c783.js",
     "runtime-main.js.map": "/trivia-game-react-redux/static/js/runtime-main.4a16c783.js.map",
     "static/js/2.6d420cb8.chunk.js": "/trivia-game-react-redux/static/js/2.6d420cb8.chunk.js",
     "static/js/2.6d420cb8.chunk.js.map": "/trivia-game-react-redux/static/js/2.6d420cb8.chunk.js.map",
     "index.html": "/trivia-game-react-redux/index.html",
-    "precache-manifest.70ab621dddcc0d2b4b46d8462bcd36d4.js": "/trivia-game-react-redux/precache-manifest.70ab621dddcc0d2b4b46d8462bcd36d4.js",
+    "precache-manifest.3aeb499fbdfaf25453f239a5e47bb063.js": "/trivia-game-react-redux/precache-manifest.3aeb499fbdfaf25453f239a5e47bb063.js",
     "service-worker.js": "/trivia-game-react-redux/service-worker.js",
-    "static/css/main.e092d3f0.chunk.css.map": "/trivia-game-react-redux/static/css/main.e092d3f0.chunk.css.map",
+    "static/css/main.4a2da278.chunk.css.map": "/trivia-game-react-redux/static/css/main.4a2da278.chunk.css.map",
     "static/js/2.6d420cb8.chunk.js.LICENSE": "/trivia-game-react-redux/static/js/2.6d420cb8.chunk.js.LICENSE"
   },
   "entrypoints": [
     "static/js/runtime-main.4a16c783.js",
     "static/js/2.6d420cb8.chunk.js",
-    "static/css/main.e092d3f0.chunk.css",
-    "static/js/main.5cd6aad3.chunk.js"
+    "static/css/main.4a2da278.chunk.css",
+    "static/js/main.f66e0865.chunk.js"
   ]
 }
