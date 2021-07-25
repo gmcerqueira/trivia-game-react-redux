@@ -8,6 +8,7 @@ import {
   changeType,
   fetchCategories,
 } from '../actions/configAction';
+import '../styles/Config.css';
 
 const falseSortReturn = -1;
 class Config extends Component {
@@ -24,18 +25,20 @@ class Config extends Component {
   renderCategoryOptions() {
     const { categories, updateCategory } = this.props;
     return (
-      <label htmlFor="categories">
-        Category
+      <label htmlFor="categories" className="config-label">
         <select
           name="categories"
           id="category"
+          className="config-select"
           onChange={ ({ target: { value } }) => updateCategory(value) }
         >
-          <option hidden aria-label="default" />
+          <option hidden aria-label="default">
+            Category
+          </option>
           {categories
             .sort((a, b) => (a.name > b.name ? 1 : falseSortReturn))
             .map(({ id, name }) => (
-              <option key={ id } value={ id }>
+              <option key={ id } value={ id } className="config-option">
                 {name}
               </option>
             ))}
@@ -47,14 +50,16 @@ class Config extends Component {
   renderDifficultyOptions() {
     const { updateDifficulty } = this.props;
     return (
-      <label htmlFor="categories">
-        Category
+      <label htmlFor="categories" className="config-label">
         <select
-          name="categories"
-          id="category"
+          name="difficulties"
+          id="difficulty"
+          className="config-select"
           onChange={ ({ target: { value } }) => updateDifficulty(value) }
         >
-          <option hidden aria-label="default" />
+          <option hidden aria-label="default">
+            Difficulty
+          </option>
           <option value="easy">Easy</option>
           <option value="medium">Medium</option>
           <option value="hard">Hard</option>
@@ -66,14 +71,16 @@ class Config extends Component {
   renderTypeOptions() {
     const { updateType } = this.props;
     return (
-      <label htmlFor="categories">
-        Type
+      <label htmlFor="categories" className="config-label">
         <select
-          name="categories"
-          id="category"
+          name="types"
+          id="type"
+          className="config-select"
           onChange={ ({ target: { value } }) => updateType(value) }
         >
-          <option hidden aria-label="default" />
+          <option hidden aria-label="default">
+            Type
+          </option>
           <option value="boolean">True or False</option>
           <option value="multiple">Multiple choice</option>
         </select>
@@ -84,17 +91,17 @@ class Config extends Component {
   render() {
     const { isFetching } = this.props;
     return (
-      <div>
-        <h1 data-testid="settings-title">Configurações</h1>
+      <div className="config-page">
+        <h1 className="config-title" data-testid="settings-title">Settings</h1>
         {isFetching ? (
           'Loading...'
         ) : (
-          <>
+          <div className="config-container">
             {this.renderCategoryOptions()}
             {this.renderDifficultyOptions()}
             {this.renderTypeOptions()}
-            <Link to="/">SAVE</Link>
-          </>
+            <Link to="/" className="save-btn">SAVE</Link>
+          </div>
         )}
       </div>
     );
