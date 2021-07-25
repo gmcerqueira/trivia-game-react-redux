@@ -9,6 +9,7 @@ import {
   fetchCategories,
 } from '../actions/configAction';
 import '../styles/Config.css';
+import Loading from '../components/Loading';
 
 const falseSortReturn = -1;
 class Config extends Component {
@@ -94,7 +95,7 @@ class Config extends Component {
       <div className="config-page">
         <h1 className="config-title" data-testid="settings-title">Settings</h1>
         {isFetching ? (
-          'Loading...'
+          <Loading />
         ) : (
           <div className="config-container">
             {this.renderCategoryOptions()}

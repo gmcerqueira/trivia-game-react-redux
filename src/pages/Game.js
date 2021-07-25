@@ -9,6 +9,7 @@ import '../App.css';
 import BtnNext from '../components/BtnNext';
 import Header from '../components/Header';
 import '../styles/Game.css';
+import Loading from '../components/Loading';
 
 class Game extends Component {
   constructor(props) {
@@ -70,8 +71,7 @@ class Game extends Component {
           timer: 30,
           stopTimer: false,
           options: [],
-        },
-        () => this.joinAnswers(),
+        }, () => this.joinAnswers(),
       );
     }
   }
@@ -193,7 +193,7 @@ class Game extends Component {
               <div className="question-options">{this.renderOptions()}</div>
             </div>
           </div>
-        ) : 'Loading...'}
+        ) : <Loading />}
         {(!timer || stopTimer) && <BtnNext nextQuestion={ this.nextQuestion } />}
       </main>
     );
