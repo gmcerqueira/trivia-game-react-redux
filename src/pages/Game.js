@@ -173,7 +173,7 @@ class Game extends Component {
     const { questions } = this.props;
     return (
       <main className="main-component">
-        <p className="main-timer">{`Timer: ${timer}`}</p>
+        <p className="main-timer">{`T i m e r: ${timer}`}</p>
 
         {questions.length ? (
           <div className="main-container">

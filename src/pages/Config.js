@@ -93,7 +93,9 @@ class Config extends Component {
     const { isFetching } = this.props;
     return (
       <div className="config-page">
-        <h1 className="config-title" data-testid="settings-title">Settings</h1>
+        <h1 className="config-title" data-testid="settings-title">
+          S e t t i n g s
+        </h1>
         {isFetching ? (
           <Loading />
         ) : (

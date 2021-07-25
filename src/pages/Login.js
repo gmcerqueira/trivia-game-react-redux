@@ -48,7 +48,7 @@ class Login extends Component {
               savePlayerImg(email);
             } }
           >
-            Jogar
+            Play
           </button>
         </Link>
         <Link to="/config">
@@ -57,7 +57,7 @@ class Login extends Component {
             type="button"
             data-testid="btn-settings"
           >
-            Configurações
+            Settings
           </button>
         </Link>
       </>
